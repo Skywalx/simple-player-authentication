@@ -42,6 +42,9 @@
 
 - More storage options such as: MySQL, PostgreSQL and MSSQL
 
+:exclamation: Attention: This is not a decisive list! There is no roadmap for this Minecraft plugin so new features
+might not have been listed here or features listed here might not be implemented! :exclamation:
+
 # :question: FAQ
 
 **Isn't this plugin supporting the use of 'online-mode=false' and 'cracked' Minecraft accounts which is an illegitimate

@@ -15,5 +15,7 @@
 ---
 
 **Website**: https://www.skywalx.com
+**Discord**: https://discord.skywalx.com/
+**Business E-mail**: business@skywalx.com
 
 ---

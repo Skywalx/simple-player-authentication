@@ -21,3 +21,8 @@
 **Business E-mail**: business@skywalx.com
 
 ---
+
+# :white_check_mark: Features
+
+- Commands to register/unregister an account
+- Commands to login/logout to/from an account.

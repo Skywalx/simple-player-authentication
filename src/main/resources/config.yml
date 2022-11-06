@@ -5,7 +5,7 @@
 ############################################################
 
 ########################
-#Settings
+#Basic Settings
 ########################
 
 #Minimal length you want the passwords to be (0 = no minimal).
@@ -20,9 +20,19 @@ login-attempts: 3
 #What happens after failing the maximum attempts
 punishment: "kick %PLAYERNAME% §cYou have reached maximum login attempts"
 
+########################
+#Advanced Settings
+########################
+
+# Attention! These are more complicated settings that are better left alone if you do not understand them!
+
 #Which algorithm has to be used for hashing the password.
 #Available algorithms: argon2, scrypt, bcrypt, pbkdf2
 hashing-algorithm: "argon2"
+
+#Which repository has to be used to store the accounts.
+# Available repositories: yaml
+repository-type: "yaml"
 
 ########################
 #Messages

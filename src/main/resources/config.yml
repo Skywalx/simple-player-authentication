@@ -1,0 +1,83 @@
+############################################################
+# +------------------------------------------------------+ #
+# |             Simple Player Authentication             | #
+# +------------------------------------------------------+ #
+############################################################
+
+########################
+#Settings
+########################
+
+#Minimal length you want the passwords to be (0 = no minimal).
+minimal-password-length: 4
+
+#Have the players use numbers in their password.
+numbers-in-password-required: true
+
+#The amount of attempts that can be made to login.
+login-attempts: 3
+
+#What happens after failing the maximum attempts
+punishment: "kick %PLAYERNAME% §cYou have reached maximum login attempts"
+
+#Which algorithm has to be used for hashing the password.
+#Available algorithms: argon2, scrypt, bcrypt, pbkdf2
+hashing-algorithm: "argon2"
+
+########################
+#Messages
+########################
+
+#When the instance that sends the message isn't a player (example: Console).
+sender-is-not-player: "§cYou must be a player to execute this command!"
+
+#When the player first time joins the server. This message will appear to register the player.
+register: "§7Please register before proceeding\nUsername: §c%PLAYERNAME%\n§7Usage: §c/register [password] [password]§7"
+
+#When the player revisits the server. He will be asked to login with this message.
+login: "§7Please login before proceeding\nUsername: §c%PLAYERNAME%\n§7Usage: §c/login [password]§7"
+
+#When the account already has been registered by someone.
+already-registered: "§cThis account is already registered!"
+
+#When the player already loggin in.
+already-logged-in: "§cYou already logged in!"
+
+#When the player used the register command wrong.
+wrong-usage-register: "§cUsage: /register [password] [password]"
+
+#When the player used the login command wrong.
+wrong-usage-login: "§cUsage: /login [password]"
+
+#When the player used the unregister command wrong.
+wrong-usage-unregister: "§cUsage: /unregister"
+
+#When the player used the changepassword command wrong.
+wrong-usage-changepassword: "§cUsage: /changepassword [old password] [new password] [new password]"
+
+#When the two given passwords while registering don't match.
+not-matching-password: "§cThe passwords do no match!"
+
+#When configured, if the password is too short, the follow will be send to the player.
+password-to-short: "§cThe given password is too short!"
+
+#When configured, this message will apear when a player has no numbers in his password.
+password-has-no-numbers: "§cThe password has to have at least one number in it"
+
+#When the given password while logging in is incorrect.
+wrong-password: "§cThe given password is incorrect!"
+
+#When a player gives the wrong old password when using changepassword.
+wrong-old-password: "§cThe old password is incorrect!"
+
+#When the player has succesfully registered his account.
+succesful-registration: "§7You have succesfully registered §c%PLAYERNAME%§7!"
+
+#When the player has succesfully logged in his account.
+succesful-login: "§7You succesfully logged in!"
+
+#When the player unregisters his account.
+succesful-unregistration: "§cYour account has been unregistered!"
+
+#When the player changed his account's password.
+succesful-changed-password: "§7Your password has been changed!"

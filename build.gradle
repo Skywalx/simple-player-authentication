@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'com.skywalx.simpleplayerauthentication'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'aikar'
+        url = 'https://repo.aikar.co/content/groups/aikar/'
+    }
+    maven {
+        name = 'codemc-snapshots'
+        url = 'https://repo.codemc.io/repository/maven-snapshots'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation "co.aikar:acf-bukkit:0.5.1-SNAPSHOT"
+    implementation "net.wesjd:anvilgui:1.5.3-SNAPSHOT"
+    implementation "com.password4j:password4j:1.6.2"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}

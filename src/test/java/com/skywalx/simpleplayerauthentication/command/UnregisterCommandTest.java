@@ -14,10 +14,10 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-
-class RegisterCommandTest {
+class UnregisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yaml";
     private final HashingService hashingService = new ArgonHashingService();
@@ -32,6 +32,12 @@ class RegisterCommandTest {
         yamlConfiguration = YamlConfiguration.loadConfiguration(file);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(account.uuid());
+        try {
+            yamlConfiguration.set(account.uuid().toString() + ".password", hashingService.hash(account.password()));
+            yamlConfiguration.save(file);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     @AfterEach
@@ -41,14 +47,12 @@ class RegisterCommandTest {
     }
 
     @Test
-    void onRegister_shouldRegisterAccountWhenPasswordsMatch() {
-        String password = "minecraft123";
-        String confirmationPassword = "minecraft123";
+    void onUnregisterCommand() {
         YamlAccountRepository yamlAccountRepository = new YamlAccountRepository(file, yamlConfiguration);
-        RegisterCommand registerCommand = new RegisterCommand(yamlAccountRepository, hashingService);
+        UnregisterCommand unregisterCommand = new UnregisterCommand(yamlAccountRepository, hashingService);
 
-        registerCommand.onRegisterCommand(player, password, confirmationPassword);
+        unregisterCommand.onUnregisterCommand(player, account.password());
 
-        assertTrue(yamlAccountRepository.login(account));
+        assertFalse(yamlAccountRepository.login(account));
     }
 }

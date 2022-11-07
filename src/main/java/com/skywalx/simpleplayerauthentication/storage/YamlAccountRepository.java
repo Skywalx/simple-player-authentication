@@ -41,10 +41,15 @@ public class YamlAccountRepository implements AccountRepository {
     }
 
     @Override
+    public boolean exists(Account account) {
+        return this.yamlConfiguration.get(account.uuid().toString()) != null;
+    }
+
+    @Override
     public boolean login(Account account) {
         String uuid = account.uuid().toString();
         String password = account.password();
-        if (this.yamlConfiguration.get(uuid) != null) {
+        if (exists(account)) {
             return password.equals(this.yamlConfiguration.get(uuid + ".password"));
         }
         return false;

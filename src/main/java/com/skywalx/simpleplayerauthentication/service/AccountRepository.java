@@ -10,5 +10,7 @@ public interface AccountRepository {
 
     void delete(Account account);
 
+    boolean exists(Account account);
+
     boolean login(Account account);
 }

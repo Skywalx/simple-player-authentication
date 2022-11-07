@@ -1,9 +1,18 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 group 'com.skywalx.simpleplayerauthentication'
 version '1.0.0'
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
 
 repositories {
     mavenCentral()
@@ -27,14 +36,21 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    implementation "co.aikar:acf-bukkit:0.5.1-SNAPSHOT"
-    implementation "net.wesjd:anvilgui:1.5.3-SNAPSHOT"
-    implementation "com.password4j:password4j:1.6.2"
+    implementation 'co.aikar:acf-bukkit:0.5.1-SNAPSHOT'
+    implementation 'net.wesjd:anvilgui:1.5.3-SNAPSHOT'
+    implementation 'com.password4j:password4j:1.6.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testImplementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    testImplementation "org.mockito:mockito-core:4.8.0"
+    testImplementation 'org.mockito:mockito-core:4.8.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
+
+shadowJar {
+    relocate 'co.aikar.commands', 'com.skywalx.simpleplayerauthentication.acf'
+    relocate 'co.aikar.locales', 'com.skywalx.simpleplayerauthentication.locales'
+}
+
+build.dependsOn shadowJar
 
 test {
     useJUnitPlatform()

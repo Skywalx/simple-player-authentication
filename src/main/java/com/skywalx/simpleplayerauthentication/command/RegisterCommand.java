@@ -3,7 +3,6 @@ package com.skywalx.simpleplayerauthentication.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
-import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
 import com.skywalx.simpleplayerauthentication.service.*;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.entity.Player;
@@ -26,8 +25,12 @@ public class RegisterCommand extends BaseCommand {
         if (password.equals(confirmationPassword)) {
             Account account = new Account(player.getUniqueId(), password, hashingService);
             try {
-                accountRepository.save(account);
-                player.sendMessage("§aYou have successfully registered!");
+                if (!accountRepository.exists(account)) {
+                    accountRepository.save(account);
+                    player.sendMessage("§6You have successfully registered " + player.getDisplayName());
+                } else {
+                    player.sendMessage("§6The account for " + player.getDisplayName() + " is already registered!");
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

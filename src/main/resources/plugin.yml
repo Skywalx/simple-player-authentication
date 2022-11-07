@@ -9,3 +9,6 @@ commands:
   register:
     description: "Command to register a new account."
     usage: "Usage: /register [password] [password]"
+  unregister:
+    description: "Command to unregister an existing account."
+    usage: "Usage /unregister [password]"

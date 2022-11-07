@@ -31,12 +31,12 @@
 
 # :page_with_curl: Commands
 
-| Usage                           | Description | Permission |
-|---------------------------------|-------------|------------|
-| /register [password] [password] |             | None       |
-| /unregister [password]          |             | None       |
-| /login [password]               |             | None       |
-| /logout                         |             | None       |
+| Usage                           | Description                                | Permission |
+|---------------------------------|--------------------------------------------|------------|
+| /register [password] [password] | Command to register a new account.         | None       |
+| /unregister [password]          | Command to unregister an existing account. | None       |
+| /login [password]               |                                            | None       |
+| /logout                         |                                            | None       |
 
 # :wrench: Future Improvements
 
@@ -66,6 +66,6 @@ use of Minecraft ?**
 
 **Can I use the source code of this plugin to adapt to my own liking ?**
 
-- Yes you can! The plugin is license under the [MIT license](LICENSE) which allows you to fork this project and reuse it
-  even for commercial use. The only restriction is that you cannot remove Skywalx copyright markings within the code.
+- Yes you can! The plugin is licensed under the [MIT license](LICENSE) which allows you to fork this project and reuse
+  it even for commercial use. The only restriction is that you cannot remove Skywalx copyright markings within the code.
   Otherwise, feel free to use to your liking!

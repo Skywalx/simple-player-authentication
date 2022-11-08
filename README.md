@@ -26,7 +26,7 @@
 
 - Ability to register and unregister an account.
 - Ability to login into and logout from an existing account.
-- Hashing of the accounts password using Argon2, Bcrypt or Scrypt.
+- Hashing of the accounts password using Argon2
 - Storage of accounts within `accounts.yaml` in the Plugin folder
 
 # :page_with_curl: Commands

@@ -31,12 +31,13 @@
 
 # :page_with_curl: Commands
 
-| Usage                           | Description                                | Permission |
-|---------------------------------|--------------------------------------------|------------|
-| /register [password] [password] | Command to register a new account.         | None       |
-| /unregister [password]          | Command to unregister an existing account. | None       |
-| /login [password]               |                                            | None       |
-| /logout                         |                                            | None       |
+| Usage                                                            | Description                                                | Permission |
+|------------------------------------------------------------------|------------------------------------------------------------|------------|
+| /register [password] [password]                                  | Command to register a new account.                         | None       |
+| /unregister [password]                                           | Command to unregister an existing account.                 | None       |
+| /login [password]                                                | Command to login into an account.                          | None       |
+| /logout                                                          | Command to logout from an account.                         | None       |
+| /changepassword [current password] [new password] [new password] | Command that changes the password of a registered account. | None       |
 
 # :wrench: Future Improvements
 

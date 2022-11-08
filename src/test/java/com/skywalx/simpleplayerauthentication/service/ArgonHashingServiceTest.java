@@ -19,7 +19,10 @@ class ArgonHashingServiceTest {
 
     @Test
     void verify_shouldVerifyAPasswordHashedWithArgon2() {
-        String hash = Password.hash(PASSWORD).withArgon2().getResult();
+        String hash = Password.hash(PASSWORD)
+                .addRandomSalt()
+                .withArgon2()
+                .getResult();
 
         boolean verification = argonHashingService.verify(PASSWORD, hash);
 

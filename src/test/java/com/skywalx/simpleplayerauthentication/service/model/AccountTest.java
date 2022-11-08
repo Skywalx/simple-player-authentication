@@ -3,10 +3,13 @@ package com.skywalx.simpleplayerauthentication.service.model;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AccountTest {
     private final HashingService hashingService = new ArgonHashingService();
@@ -18,7 +21,20 @@ class AccountTest {
 
         String hashPassword = account.password();
 
-        assertEquals(hashingService.hash(password), hashPassword);
+        assertTrue(hashingService.verify(password, hashPassword));
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "arma3123       |   false",
+                    "minecraft123   |   true"
+            }, delimiter = '|'
+    )
+    void doesPasswordMatch_withSamePlainTextPassword_shouldReturnTrue(String password, boolean expectsMatch) {
+        boolean isSameAccount = account.doesPasswordMatch(password);
+
+        assertEquals(expectsMatch, isSameAccount);
     }
 
 }

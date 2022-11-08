@@ -1,6 +1,7 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
@@ -13,11 +14,10 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-
-class RegisterCommandTest {
+class LoginCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yaml";
     private final HashingService hashingService = new ArgonHashingService();
@@ -25,6 +25,7 @@ class RegisterCommandTest {
     private Player player;
     private File file;
     private YamlConfiguration yamlConfiguration;
+    private AuthenticatedUserRepository authenticatedUserRepository;
 
     @BeforeEach
     void setup() {
@@ -41,14 +42,10 @@ class RegisterCommandTest {
     }
 
     @Test
-    void onRegisterPassword_shouldRegisterAccountWhenPasswordsMatch() {
-        String password = "minecraft123";
-        String confirmationPassword = "minecraft123";
-        YamlAccountRepository accountRepository = new YamlAccountRepository(file, yamlConfiguration);
-        RegisterCommand registerCommand = new RegisterCommand(accountRepository, hashingService);
+    void onLoginCommand() {
+        YamlAccountRepository yamlAccountRepository = new YamlAccountRepository(file, yamlConfiguration);
+        LoginCommand loginCommand = new LoginCommand(yamlAccountRepository, hashingService, authenticatedUserRepository);
 
-        registerCommand.onRegisterCommand(player, password, confirmationPassword);
-
-        assertTrue(accountRepository.exists(account));
+        loginCommand.onLoginCommand(player, account.password());
     }
 }

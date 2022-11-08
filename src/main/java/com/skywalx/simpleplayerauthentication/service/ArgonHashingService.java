@@ -6,6 +6,7 @@ public class ArgonHashingService implements HashingService {
     @Override
     public String hash(String password) {
         return Password.hash(password)
+                .addRandomSalt()
                 .withArgon2()
                 .getResult();
     }

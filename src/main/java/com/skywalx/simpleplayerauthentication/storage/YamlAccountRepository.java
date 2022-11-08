@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
 
 
 public class YamlAccountRepository implements AccountRepository {
@@ -30,6 +32,14 @@ public class YamlAccountRepository implements AccountRepository {
     }
 
     @Override
+    public Optional<Account> findByUuid(UUID uuid) {
+        if (uuid == null) return Optional.empty();
+        String password = this.yamlConfiguration.getString(uuid.toString() + ".password");
+        if (password == null) return Optional.empty();
+        return Optional.of(new Account(uuid, password));
+    }
+
+    @Override
     public void delete(Account account) {
         String uuid = account.uuid().toString();
         try {
@@ -45,8 +55,4 @@ public class YamlAccountRepository implements AccountRepository {
         return this.yamlConfiguration.get(account.uuid().toString()) != null;
     }
 
-    @Override
-    public boolean isCorrectPassword(Account account) {
-        return account.password().equals(this.yamlConfiguration.get(account.uuid().toString() + ".password"));
-    }
 }

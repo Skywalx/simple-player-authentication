@@ -26,21 +26,23 @@ public class RegisterCommand extends BaseCommand {
     @Default
     @Syntax("Usage: /register [password] [password]")
     public void onRegisterCommand(Player player, String password, String confirmationPassword) {
-        if (password.equals(confirmationPassword)) {
-            Account account = new Account(player.getUniqueId(), password, hashingService);
-            try {
-                if (!accountRepository.exists(account)) {
-                    accountRepository.save(account);
-                    player.sendMessage("§6You have successfully registered " + player.getDisplayName());
-                } else {
-                    player.sendMessage("§6The account for " + player.getDisplayName() + " is already registered!");
-                }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        } else {
+        Account account = new Account(player.getUniqueId(), password, hashingService);
+
+        if (accountRepository.exists(account)) {
+            player.sendMessage("§6The account for " + player.getDisplayName() + " is already registered!");
+            return;
+        }
+
+        if (!password.equals(confirmationPassword)) {
             player.sendMessage("§6The password are not the same! Please try again!");
+            return;
+        }
+
+        try {
+            accountRepository.save(account);
+            player.sendMessage("§6You have successfully registered " + player.getDisplayName());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
     }
-
 }

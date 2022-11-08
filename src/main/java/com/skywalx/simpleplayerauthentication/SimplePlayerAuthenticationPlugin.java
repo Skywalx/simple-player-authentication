@@ -30,29 +30,34 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         this.saveDefaultConfig();
 
         String hashingServiceName = this.getConfig().getString("hashing-algorithm");
-        if ("argon2".equalsIgnoreCase(hashingServiceName)) {
-            hashingService = new ArgonHashingService();
-            logger.info("- Hashing service: " + hashingServiceName);
-        } else {
+
+        if (!"argon2".equalsIgnoreCase(hashingServiceName)) {
             logger.severe("The 'hashing-algorithm' has not been defined or is defined incorrectly!");
+            this.getServer().shutdown();
         }
 
+        hashingService = new ArgonHashingService();
+        logger.info("- Hashing service: " + hashingServiceName);
+
         String accountRepositoryType = this.getConfig().getString("repository-type");
-        if ("yaml".equalsIgnoreCase(accountRepositoryType)) {
-            File accountsFile = new File(this.getDataFolder(), "accounts.yaml");
-            if (!accountsFile.exists()) {
-                try {
-                    accountsFile.createNewFile();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-            YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(accountsFile);
-            accountRepository = new YamlAccountRepository(accountsFile, yamlConfiguration);
-            logger.info("- Repository type: " + accountRepositoryType);
-        } else {
+
+        if (!"yaml".equalsIgnoreCase(accountRepositoryType)) {
             logger.severe("The 'repository-type' has not been defined or is defined incorrectly!");
+            this.getServer().shutdown();
         }
+
+        File accountsFile = new File(this.getDataFolder(), "accounts.yaml");
+        if (!accountsFile.exists()) {
+            try {
+                accountsFile.createNewFile();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(accountsFile);
+        accountRepository = new YamlAccountRepository(accountsFile, yamlConfiguration);
+        logger.info("- Repository type: " + accountRepositoryType);
+
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         bukkitCommandManager.registerCommand(new RegisterCommand(accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository, hashingService));

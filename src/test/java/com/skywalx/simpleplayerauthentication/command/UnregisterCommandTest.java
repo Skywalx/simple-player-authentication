@@ -48,11 +48,11 @@ class UnregisterCommandTest {
 
     @Test
     void onUnregisterCommand() {
-        YamlAccountRepository yamlAccountRepository = new YamlAccountRepository(file, yamlConfiguration);
-        UnregisterCommand unregisterCommand = new UnregisterCommand(yamlAccountRepository, hashingService);
+        YamlAccountRepository accountRepository = new YamlAccountRepository(file, yamlConfiguration);
+        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
 
         unregisterCommand.onUnregisterCommand(player, account.password());
 
-        assertFalse(yamlAccountRepository.isCorrectPassword(account));
+        assertFalse(accountRepository.exists(account));
     }
 }

@@ -26,15 +26,17 @@ public class UnregisterCommand extends BaseCommand {
     @Syntax("Usage /unregister [password]")
     public void onUnregisterCommand(Player player, String password) {
         Account account = new Account(player.getUniqueId(), password, hashingService);
-        if (accountRepository.exists(account)) {
-            if (accountRepository.isCorrectPassword(account)) {
-                accountRepository.delete(account);
-                player.sendMessage("§6The account has been successfully unregistered!");
-            } else {
-                player.sendMessage("§6The given password is incorrect!");
-            }
-        } else {
+        if (!accountRepository.exists(account)) {
             player.sendMessage("§6There is no account registered for " + player.getDisplayName() + "!");
+            return;
         }
+
+        if (!account.doesPasswordMatch(password)) {
+            player.sendMessage("§6The given password is incorrect!");
+            return;
+        }
+
+        accountRepository.delete(account);
+        player.sendMessage("§6The account has been successfully unregistered!");
     }
 }

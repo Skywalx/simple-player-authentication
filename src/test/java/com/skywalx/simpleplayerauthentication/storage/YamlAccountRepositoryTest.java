@@ -1,5 +1,6 @@
 package com.skywalx.simpleplayerauthentication.storage;
 
+import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +46,16 @@ class YamlAccountRepositoryTest {
     }
 
     @Test
+    void findByUuid_whenAnAccountExists_shouldReturnAccount() throws IOException {
+        AccountRepository accountRepository = new YamlAccountRepository(file, yamlConfiguration);
+
+        accountRepository.save(account);
+        Optional<Account> foundAccount = accountRepository.findByUuid(UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"));
+
+        assertTrue(foundAccount.isPresent());
+    }
+
+    @Test
     void delete_shouldDeleteAccountFromAccountsYamlFile() {
         YamlAccountRepository yamlAccountRepository = new YamlAccountRepository(file, yamlConfiguration);
         yamlConfiguration.set(account.uuid().toString() + ".password", account.password());
@@ -62,15 +74,4 @@ class YamlAccountRepositoryTest {
 
         assertTrue(exists);
     }
-
-    @Test
-    void validatePassword_whenPasswordIsCorrect_shouldReturnTrue() {
-        YamlAccountRepository yamlAccountRepository = new YamlAccountRepository(file, yamlConfiguration);
-        yamlConfiguration.set(account.uuid().toString() + ".password", account.password());
-
-        boolean isCorrectPassword = yamlAccountRepository.isCorrectPassword(account);
-
-        assertTrue(isCorrectPassword);
-    }
-
 }

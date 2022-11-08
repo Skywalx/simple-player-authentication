@@ -3,6 +3,7 @@ package com.skywalx.simpleplayerauthentication;
 import co.aikar.commands.BukkitCommandManager;
 import com.skywalx.simpleplayerauthentication.command.RegisterCommand;
 import com.skywalx.simpleplayerauthentication.command.UnregisterCommand;
+import com.skywalx.simpleplayerauthentication.listener.PlayerListener;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
@@ -29,7 +30,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         this.saveDefaultConfig();
 
         String hashingServiceName = this.getConfig().getString("hashing-algorithm");
-        if (hashingServiceName.equalsIgnoreCase("argon2")) {
+        if ("argon2".equalsIgnoreCase(hashingServiceName)) {
             hashingService = new ArgonHashingService();
             logger.info("- Hashing service: " + hashingServiceName);
         } else {
@@ -37,7 +38,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         }
 
         String accountRepositoryType = this.getConfig().getString("repository-type");
-        if (accountRepositoryType.equalsIgnoreCase("yaml")) {
+        if ("yaml".equalsIgnoreCase(accountRepositoryType)) {
             File accountsFile = new File(this.getDataFolder(), "accounts.yaml");
             if (!accountsFile.exists()) {
                 try {
@@ -55,6 +56,9 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         bukkitCommandManager.registerCommand(new RegisterCommand(accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository, hashingService));
+
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
         logger.info("Plugin has been enabled!");
     }
 

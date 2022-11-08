@@ -40,6 +40,7 @@
 
 # :wrench: Future Improvements
 
+- More hashing algorithms such as: Bcrypt and Scrypt
 - More storage options such as: MySQL, PostgreSQL and MSSQL
 
 :exclamation: Attention: This is not a decisive list! There is no roadmap for this Minecraft plugin so new features

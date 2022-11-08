@@ -5,10 +5,3 @@ name: SimplePlayerAuthentication
 description: Simple plugin that enables an extra authentication layer within the Minecraft server.
 author: Skywalx
 website: www.skywalx.com
-commands:
-  register:
-    description: "Command to register a new account."
-    usage: "Usage: /register [password] [password]"
-  unregister:
-    description: "Command to unregister an existing account."
-    usage: "Usage /unregister [password]"

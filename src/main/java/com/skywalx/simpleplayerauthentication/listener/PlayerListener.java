@@ -20,5 +20,4 @@ public class PlayerListener implements Listener {
         Location currentLocation = player.getLocation();
         player.teleport(currentLocation);
     }
-
 }

@@ -3,6 +3,8 @@ package com.skywalx.simpleplayerauthentication.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Syntax;
 import com.skywalx.simpleplayerauthentication.service.*;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.entity.Player;
@@ -10,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 
 @CommandAlias("register")
+@Description("Command to register a new account.")
 public class RegisterCommand extends BaseCommand {
 
     private final AccountRepository accountRepository;
@@ -21,6 +24,7 @@ public class RegisterCommand extends BaseCommand {
     }
 
     @Default
+    @Syntax("Usage: /register [password] [password]")
     public void onRegisterCommand(Player player, String password, String confirmationPassword) {
         if (password.equals(confirmationPassword)) {
             Account account = new Account(player.getUniqueId(), password, hashingService);

@@ -53,6 +53,6 @@ class UnregisterCommandTest {
 
         unregisterCommand.onUnregisterCommand(player, account.password());
 
-        assertFalse(yamlAccountRepository.login(account));
+        assertFalse(yamlAccountRepository.isCorrectPassword(account));
     }
 }

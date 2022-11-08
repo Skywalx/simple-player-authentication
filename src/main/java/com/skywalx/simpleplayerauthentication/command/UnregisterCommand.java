@@ -22,11 +22,15 @@ public class UnregisterCommand extends BaseCommand {
     @Default
     public void onUnregisterCommand(Player player, String password) {
         Account account = new Account(player.getUniqueId(), password, hashingService);
-        if (accountRepository.login(account)) {
-            accountRepository.delete(account);
-            player.sendMessage("§6The account has been successfully unregistered!");
+        if (accountRepository.exists(account)) {
+            if (accountRepository.isCorrectPassword(account)) {
+                accountRepository.delete(account);
+                player.sendMessage("§6The account has been successfully unregistered!");
+            } else {
+                player.sendMessage("§6The given password is incorrect!");
+            }
         } else {
-            player.sendMessage("§6The account isn't registered or your password is incorrect!");
+            player.sendMessage("§6There is no account registered for " + player.getDisplayName() + "!");
         }
     }
 }

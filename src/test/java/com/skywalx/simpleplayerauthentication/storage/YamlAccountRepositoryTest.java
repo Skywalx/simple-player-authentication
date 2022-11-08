@@ -64,13 +64,13 @@ class YamlAccountRepositoryTest {
     }
 
     @Test
-    void login_whenPasswordIsCorrect_shouldReturnTrue() {
+    void validatePassword_whenPasswordIsCorrect_shouldReturnTrue() {
         YamlAccountRepository yamlAccountRepository = new YamlAccountRepository(file, yamlConfiguration);
         yamlConfiguration.set(account.uuid().toString() + ".password", account.password());
 
-        boolean login = yamlAccountRepository.login(account);
+        boolean isCorrectPassword = yamlAccountRepository.isCorrectPassword(account);
 
-        assertTrue(login);
+        assertTrue(isCorrectPassword);
     }
 
 }

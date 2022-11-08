@@ -12,5 +12,5 @@ public interface AccountRepository {
 
     boolean exists(Account account);
 
-    boolean login(Account account);
+    boolean isCorrectPassword(Account account);
 }

@@ -49,6 +49,6 @@ class RegisterCommandTest {
 
         registerCommand.onRegisterCommand(player, password, confirmationPassword);
 
-        assertTrue(yamlAccountRepository.login(account));
+        assertTrue(yamlAccountRepository.isCorrectPassword(account));
     }
 }

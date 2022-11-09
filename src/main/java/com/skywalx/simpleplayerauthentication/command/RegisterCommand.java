@@ -40,7 +40,7 @@ public class RegisterCommand extends BaseCommand {
 
         try {
             accountRepository.save(account);
-            player.sendMessage("§6You have successfully registered " + player.getDisplayName());
+            player.sendMessage("§6You have successfully registered " + player.getDisplayName() + "!");
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package com.skywalx.simpleplayerauthentication.command;
 
+import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
@@ -12,10 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class UnregisterCommandTest {
 
@@ -25,11 +26,13 @@ class UnregisterCommandTest {
     private Player player;
     private File file;
     private YamlConfiguration yamlConfiguration;
+    private AccountRepository accountRepository;
 
     @BeforeEach
     void setup() {
         file = new File(PATH);
         yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+        accountRepository = new YamlAccountRepository(file, yamlConfiguration);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(account.uuid());
         try {
@@ -47,12 +50,34 @@ class UnregisterCommandTest {
     }
 
     @Test
-    void onUnregisterCommand() {
-        YamlAccountRepository accountRepository = new YamlAccountRepository(file, yamlConfiguration);
+    void onUnregisterCommand_whenTheCorrectPasswordIsGiven_shouldUnregisterAccount() {
         UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
 
         unregisterCommand.onUnregisterCommand(player, account.password());
 
         assertFalse(accountRepository.exists(account));
+        verify(player).sendMessage("§6The account has been successfully unregistered!");
+    }
+
+    @Test
+    void onUnregisterCommand_whenTheIncorrectPasswordIsGiven_shouldReturnMessageToPlayer() {
+        String inAccuratePassword = "321tfarcenim";
+        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
+
+        unregisterCommand.onUnregisterCommand(player, inAccuratePassword);
+
+        verify(player).sendMessage("§6The given password is incorrect!");
+    }
+
+    @Test
+    void onUnregisterCommand_whenGivenAccountDoesNotExist_shouldReturnMessageToPlayer() {
+        Player otherPlayer = mock(Player.class);
+        when(otherPlayer.getUniqueId()).thenReturn(UUID.fromString("67240b03-a3b9-4006-84d2-b335a4917e4c"));
+        when(otherPlayer.getDisplayName()).thenReturn("HungryDev");
+        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
+
+        unregisterCommand.onUnregisterCommand(otherPlayer, "arma3123");
+
+        verify(otherPlayer).sendMessage("§6There is no account registered for HungryDev!");
     }
 }

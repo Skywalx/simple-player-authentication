@@ -1,5 +1,6 @@
 package com.skywalx.simpleplayerauthentication.command;
 
+import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
@@ -15,8 +16,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ChangePasswordCommandTest {
 
@@ -26,11 +26,13 @@ class ChangePasswordCommandTest {
     private Player player;
     private File file;
     private YamlConfiguration yamlConfiguration;
+    private AccountRepository accountRepository;
 
     @BeforeEach
     void setUp() throws IOException {
         file = new File(PATH);
         yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+        accountRepository = new YamlAccountRepository(file, yamlConfiguration);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(account.uuid());
         yamlConfiguration.set(player.getUniqueId() + ".password", "$argon2id$v=19$m=15360,t=2,p=1$IwXRsCNW77+9Sk/vv73vv70P77+9eO+/ve+/vRMCPO+/ve+/ve+/vVTvv73vv73vv71odnRQ77+977+9xrspHO+/ve+/ve+/ve+/vXQs77+9Tkkx77+977+9djjvv71ZV0hzO3Dvv71uVu+/ve+/vR0$m+wk/JZAONsXL21gMHhyH5UfGUoMBQU99nkRlmhnBl4");
@@ -44,7 +46,7 @@ class ChangePasswordCommandTest {
     }
 
     @Test
-    void onChangePasswordCommand_whencorrectOldPasswordIsGiven_shouldChangePassword() {
+    void onChangePasswordCommand_whencorrectCurrentPasswordIsGivenAndNewPasswordsMatch_shouldChangePassword() {
         String currentPassword = "minecraft123";
         String newPassword = "321tfarcenim";
         YamlAccountRepository accountRepository = new YamlAccountRepository(file, yamlConfiguration);
@@ -54,5 +56,28 @@ class ChangePasswordCommandTest {
 
         Account updatedAccount = accountRepository.findByUuid(player.getUniqueId()).get();
         assertTrue(updatedAccount.doesPasswordMatch(newPassword));
+    }
+
+    @Test
+    void onChangePasswordCommand_whenincorrectOldPasswordIsGiven_shouldReturnMessageToPlayer() {
+        String currentPassword = "arma3123";
+        String newPassword = "321tfarcenim";
+        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand(accountRepository, hashingService);
+
+        changePasswordCommand.onChangePasswordCommand(player, currentPassword, newPassword, newPassword);
+
+        verify(player).sendMessage("The current password is incorrect!");
+    }
+
+    @Test
+    void onChangePasswordCommand_whenCurrentPasswordIsCorrectAndGivenNewPasswordsDoNotMatch_shouldReturnMessageToPlayer() {
+        String currentPassword = "minecraft123";
+        String newPassword = "321tfarcenim";
+        String incorrectConfirmationNewPassword = "arma123";
+        ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand(accountRepository, hashingService);
+
+        changePasswordCommand.onChangePasswordCommand(player, currentPassword, newPassword, incorrectConfirmationNewPassword);
+
+        verify(player).sendMessage("The two new passwords do not match!");
     }
 }

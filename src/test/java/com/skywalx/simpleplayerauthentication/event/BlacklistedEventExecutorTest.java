@@ -1,9 +1,10 @@
-package com.skywalx.simpleplayerauthentication.listener;
+package com.skywalx.simpleplayerauthentication.event;
 
+import com.skywalx.simpleplayerauthentication.event.BlacklistedEventExclusion;
+import com.skywalx.simpleplayerauthentication.event.BlacklistedEventExecutor;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.InMemoryAuthenticatedUserRepository;
-import org.assertj.core.api.Assertions;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -12,11 +13,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.junit.jupiter.api.Test;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BlacklistedEventExecutorTest {
@@ -56,6 +57,20 @@ class BlacklistedEventExecutorTest {
     void execute_givenBlacklistedEvent_shouldNotCancel_whenNotAPlayerEvent() {
         BlacklistedEventExecutor eventExecutor = new BlacklistedEventExecutor(playerAuthService, accountRepository);
         EntityMountEvent event = new EntityMountEvent(null, null);
+
+        eventExecutor.execute(null, event);
+
+        assertThat(event.isCancelled()).isFalse();
+    }
+
+    @Test
+    void execute_givenBlacklistedEvent_shouldNotCancel_whenExclusionIsMatched() {
+        BlacklistedEventExecutor eventExecutor = new BlacklistedEventExecutor(playerAuthService, accountRepository, List.of(event -> true));
+        Player playerMock = mock(Player.class);
+        when(playerMock.getUniqueId()).thenReturn(PLAYER_UUID);
+        when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "123")));
+        when(playerAuthService.isAuthenticated(any(Account.class))).thenReturn(false);
+        PlayerMoveEvent event = new PlayerMoveEvent(playerMock, null, null);
 
         eventExecutor.execute(null, event);
 

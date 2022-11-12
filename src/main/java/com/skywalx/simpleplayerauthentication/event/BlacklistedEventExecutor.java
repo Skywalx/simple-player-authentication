@@ -1,4 +1,4 @@
-package com.skywalx.simpleplayerauthentication.listener;
+package com.skywalx.simpleplayerauthentication.event;
 
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
@@ -12,16 +12,24 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.plugin.EventExecutor;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class BlacklistedEventExecutor implements EventExecutor {
 
     private final AuthenticatedUserRepository authenticatedUserRepository;
     private final AccountRepository accountRepository;
+    private final List<BlacklistedEventExclusion> blacklistExclusions;
 
-    public BlacklistedEventExecutor(AuthenticatedUserRepository authenticatedUserRepository, AccountRepository accountRepository) {
+    public BlacklistedEventExecutor(AuthenticatedUserRepository authenticatedUserRepository, AccountRepository accountRepository, List<BlacklistedEventExclusion> blacklistExclusions) {
         this.authenticatedUserRepository = authenticatedUserRepository;
         this.accountRepository = accountRepository;
+        this.blacklistExclusions = blacklistExclusions;
+    }
+
+    public BlacklistedEventExecutor(AuthenticatedUserRepository authenticatedUserRepository, AccountRepository accountRepository) {
+        this(authenticatedUserRepository, accountRepository, Collections.emptyList());
     }
 
     @Override
@@ -31,6 +39,12 @@ public class BlacklistedEventExecutor implements EventExecutor {
         }
 
         if (!(playerEvent instanceof Cancellable cancellablePlayerEvent)) {
+            return;
+        }
+
+        boolean isEventActionExcluded = blacklistExclusions.stream()
+                .anyMatch(exclusion -> exclusion.isNotBlacklisted(event));
+        if(isEventActionExcluded) {
             return;
         }
 

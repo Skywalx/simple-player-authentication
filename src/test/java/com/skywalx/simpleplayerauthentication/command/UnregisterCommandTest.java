@@ -51,7 +51,7 @@ class UnregisterCommandTest {
 
     @Test
     void onUnregisterCommand_whenTheCorrectPasswordIsGiven_shouldUnregisterAccount() {
-        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
+        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository);
 
         unregisterCommand.onUnregisterCommand(player, account.password());
 
@@ -62,7 +62,7 @@ class UnregisterCommandTest {
     @Test
     void onUnregisterCommand_whenTheIncorrectPasswordIsGiven_shouldReturnMessageToPlayer() {
         String inAccuratePassword = "321tfarcenim";
-        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
+        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository);
 
         unregisterCommand.onUnregisterCommand(player, inAccuratePassword);
 
@@ -74,7 +74,7 @@ class UnregisterCommandTest {
         Player otherPlayer = mock(Player.class);
         when(otherPlayer.getUniqueId()).thenReturn(UUID.fromString("67240b03-a3b9-4006-84d2-b335a4917e4c"));
         when(otherPlayer.getDisplayName()).thenReturn("HungryDev");
-        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository, hashingService);
+        UnregisterCommand unregisterCommand = new UnregisterCommand(accountRepository);
 
         unregisterCommand.onUnregisterCommand(otherPlayer, "arma3123");
 

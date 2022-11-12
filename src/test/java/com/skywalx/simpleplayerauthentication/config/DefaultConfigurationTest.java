@@ -6,11 +6,14 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Modifier;
 import java.util.logging.Logger;
 import org.reflections.Reflections;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -37,11 +40,13 @@ class DefaultConfigurationTest {
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(configMock, logger);
         Reflections reflections = new Reflections("org.bukkit.event.player");
         Set<Class<? extends PlayerEvent>> expectedPlayerEventClasses = reflections.getSubTypesOf(PlayerEvent.class);
-        expectedPlayerEventClasses.forEach(aClass -> System.out.println(aClass.getName()));
+        List<Class<? extends PlayerEvent>> expectedNonAbstractPlayerEventClasses = expectedPlayerEventClasses.stream()
+                .filter(aClass -> !Modifier.isAbstract(aClass.getModifiers()))
+                .collect(Collectors.toList());
 
         List<Class<? extends PlayerEvent>> playerEventClasses = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();
 
-        assertThat(playerEventClasses).containsExactlyInAnyOrderElementsOf(expectedPlayerEventClasses);
+        assertThat(playerEventClasses).containsExactlyInAnyOrderElementsOf(expectedNonAbstractPlayerEventClasses);
     }
 
     @Test

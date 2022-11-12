@@ -28,6 +28,7 @@
 - Ability to login into and logout from an existing account.
 - Hashing of the accounts password using Argon2
 - Storage of accounts within `accounts.yaml` in the Plugin folder
+- Ability to configure which player actions are allowed before authentication
 
 # :page_with_curl: Commands
 
@@ -42,7 +43,10 @@
 # :wrench: Future Improvements
 
 - More hashing algorithms such as: Bcrypt and Scrypt
-- More storage options such as: MySQL, PostgreSQL and MSSQL
+- More storage options such as: MySQL, MongoDB, PostgreSQL and MSSQL
+- More authentication storage options, to share authenticated state between servers with Redis, REST
+- Notify user every x time that /login should be used when not authenticated yet
+- 2FA, both inclusive and exclusive option (configurable) with credentials login
 
 :exclamation: Attention: This is not a decisive list! There is no roadmap for this Minecraft plugin so new features
 might not have been listed here or features listed here might not be implemented! :exclamation:

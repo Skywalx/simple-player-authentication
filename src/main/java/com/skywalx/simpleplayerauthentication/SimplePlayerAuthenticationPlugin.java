@@ -1,6 +1,7 @@
 package com.skywalx.simpleplayerauthentication;
 
 import co.aikar.commands.BukkitCommandManager;
+import com.skywalx.simpleplayerauthentication.command.LoginCommand;
 import com.skywalx.simpleplayerauthentication.command.RegisterCommand;
 import com.skywalx.simpleplayerauthentication.command.UnregisterCommand;
 import com.skywalx.simpleplayerauthentication.config.DefaultConfiguration;
@@ -75,6 +76,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         bukkitCommandManager.registerCommand(new RegisterCommand(accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository));
+        bukkitCommandManager.registerCommand(new LoginCommand(accountRepository, authenticatedUserRepository));
 
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(getConfig(), logger);
         List<Class<? extends PlayerEvent>> blacklistedPlayerEvents = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();

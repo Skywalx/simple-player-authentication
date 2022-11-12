@@ -3,21 +3,29 @@ package com.skywalx.simpleplayerauthentication;
 import co.aikar.commands.BukkitCommandManager;
 import com.skywalx.simpleplayerauthentication.command.RegisterCommand;
 import com.skywalx.simpleplayerauthentication.command.UnregisterCommand;
-import com.skywalx.simpleplayerauthentication.listener.PlayerListener;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.storage.InMemoryAuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
 
     private final Logger logger = this.getLogger();
+    private final AuthenticatedUserRepository authenticatedUserRepository = new InMemoryAuthenticatedUserRepository();
 
     @Override
     public void onEnable() {
@@ -62,7 +70,17 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         bukkitCommandManager.registerCommand(new RegisterCommand(accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository, hashingService));
 
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        Stream.of(org.bukkit.event.player.PlayerMoveEvent.class, org.bukkit.event.player.PlayerDropItemEvent.class)
+                .forEach(playerEventClass -> Bukkit.getPluginManager().registerEvent(playerEventClass, new Listener() {
+                    static HandlerList getHandlerList() {
+                        return new HandlerList();
+                    }
+                }, EventPriority.NORMAL, (listener, event) -> {
+                    logger.info("Event > " + event.getClass().getSimpleName());
+                    if(event instanceof Cancellable cancellableEvent) {
+                        cancellableEvent.setCancelled(true);
+                    }
+                }, this));
 
         logger.info("Plugin has been enabled!");
     }

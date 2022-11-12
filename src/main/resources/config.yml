@@ -33,3 +33,16 @@ hashing-algorithm: "argon2"
 #Which repository has to be used to store the accounts.
 # Available repositories: yaml
 repository-type: "yaml"
+
+# Which player events should be cancelled for a player when not authenticated yet?
+#
+# List of possible options: AsyncPlayerChatEvent, PlayerAdvancementDoneEvent, PlayerAnimationEvent, PlayerBedEnterEvent, PlayerBedLeaveEvent, PlayerBucketEntityEvent, PlayerBucketEvent,
+# PlayerChangedMainHandEvent, PlayerChangedWorldEvent, PlayerChannelEvent, PlayerChatEvent, PlayerChatTabCompleteEvent, PlayerCommandPreprocessEvent, PlayerCommandSendEvent, PlayerDropItemEvent,
+# PlayerEditBookEvent, PlayerEggThrowEvent, PlayerExpChangeEvent, PlayerFishEvent, PlayerGameModeChangeEvent, PlayerHarvestBlockEvent, PlayerHideEntityEvent, PlayerInteractEntityEvent, PlayerInteractEvent,
+# PlayerItemBreakEvent, PlayerItemConsumeEvent, PlayerItemDamageEvent, PlayerItemHeldEvent, PlayerItemMendEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLevelChangeEvent, PlayerLocaleChangeEvent, PlayerLoginEvent,
+# PlayerMoveEvent, PlayerPickupItemEvent, PlayerQuitEvent, PlayerRecipeDiscoverEvent, PlayerResourcePackStatusEvent, PlayerRespawnEvent, PlayerRiptideEvent, PlayerShearEntityEvent, PlayerShowEntityEvent,
+# PlayerSpawnLocationEvent, PlayerStatisticIncrementEvent, PlayerSwapHandItemsEvent, PlayerTakeLecternBookEvent, PlayerToggleFlightEvent, PlayerToggleSneakEvent, PlayerToggleSprintEvent, PlayerVelocityEvent
+#
+# Or if you enter the option "ALL", it will cancel all of the above
+blacklisted-events-before-login:
+  - ALL

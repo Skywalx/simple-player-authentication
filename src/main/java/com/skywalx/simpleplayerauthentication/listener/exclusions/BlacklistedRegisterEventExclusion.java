@@ -1,9 +1,9 @@
-package com.skywalx.simpleplayerauthentication.event;
+package com.skywalx.simpleplayerauthentication.listener.exclusions;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class BlacklistedLoginEventExclusion implements BlacklistedEventExclusion {
+public class BlacklistedRegisterEventExclusion implements BlacklistedEventExclusion {
 
     @Override
     public boolean isNotBlacklisted(Event event) {
@@ -11,6 +11,6 @@ public class BlacklistedLoginEventExclusion implements BlacklistedEventExclusion
             return false;
         }
 
-        return commandEvent.getMessage().startsWith("/login ");
+        return commandEvent.getMessage().startsWith("/register");
     }
 }

@@ -1,7 +1,6 @@
-package com.skywalx.simpleplayerauthentication.event;
+package com.skywalx.simpleplayerauthentication.listener;
 
-import com.skywalx.simpleplayerauthentication.event.BlacklistedEventExclusion;
-import com.skywalx.simpleplayerauthentication.event.BlacklistedEventExecutor;
+import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedEventExecutor;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.InMemoryAuthenticatedUserRepository;

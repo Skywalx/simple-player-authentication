@@ -1,9 +1,9 @@
 package com.skywalx.simpleplayerauthentication.command;
 
+import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
-import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,9 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 
 class RegisterCommandTest {
 
@@ -27,6 +25,7 @@ class RegisterCommandTest {
     private File file;
     private YamlConfiguration yamlConfiguration;
     private AccountRepository accountRepository;
+    private SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);
 
     @BeforeEach
     void setup() {
@@ -44,37 +43,16 @@ class RegisterCommandTest {
         yamlConfiguration.save(file);
     }
 
-    @Test
-    void onRegisterPassword_whenPasswordsMatch_shouldRegisterAccount() {
-        String password = "minecraft123";
-        Account account = new Account(player.getUniqueId(), password, hashingService);
-        RegisterCommand registerCommand = new RegisterCommand(accountRepository, hashingService);
-
-        registerCommand.onRegisterCommand(player, password, password);
-
-        assertTrue(accountRepository.exists(account));
-        verify(player).sendMessage("§6You have successfully registered jensoman7!");
-    }
-
-    @Test
-    void onRegisterPassword_whenPasswordsDoNotMatch_shouldReturnMessageToPlayer() {
-        String password = "minecraft123";
-        String incorrectConfirmationPassword = "arma3123";
-        RegisterCommand registerCommand = new RegisterCommand(accountRepository, hashingService);
-
-        registerCommand.onRegisterCommand(player, password, incorrectConfirmationPassword);
-
-        verify(player).sendMessage("§6The password are not the same! Please try again!");
-    }
+    // TODO: Find some way to test if inventory is opened, AnvilGUI seems to use packets so we might be able to check if a certain packet is sent
 
     @Test
     void onRegisterPassword_whenAccountAlreadyExists_shouldReturnMessageToPlayer() throws IOException {
         String password = "minecraft123";
-        RegisterCommand registerCommand = new RegisterCommand(accountRepository, hashingService);
+        RegisterCommand registerCommand = new RegisterCommand(plugin, accountRepository, hashingService);
         yamlConfiguration.set(player.getUniqueId() + ".password", hashingService.hash(password));
         yamlConfiguration.save(file);
 
-        registerCommand.onRegisterCommand(player, password, password);
+        registerCommand.onRegisterCommand(player);
 
         verify(player).sendMessage("§6The account for jensoman7 is already registered!");
     }

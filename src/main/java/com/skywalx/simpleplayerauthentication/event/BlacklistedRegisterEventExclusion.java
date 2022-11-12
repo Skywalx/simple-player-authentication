@@ -11,6 +11,6 @@ public class BlacklistedRegisterEventExclusion implements BlacklistedEventExclus
             return false;
         }
 
-        return commandEvent.getMessage().startsWith("/register ");
+        return commandEvent.getMessage().startsWith("/register");
     }
 }

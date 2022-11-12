@@ -75,7 +75,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         logger.info("- Repository type: " + accountRepositoryType);
 
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
-        bukkitCommandManager.registerCommand(new RegisterCommand(accountRepository, hashingService));
+        bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository));
         bukkitCommandManager.registerCommand(new LoginCommand(accountRepository, authenticatedUserRepository));
         bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository));

@@ -12,6 +12,7 @@ class InMemoryAuthenticatedUserRepositoryTest {
 
     private final HashingService hashingService = new ArgonHashingService();
     private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
+    private final Account differentAccountWithSameCredentials = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123");
 
     @Test
     void add_whenUserIsAddedToInMemoryAuthenticatedRepository_repositoryShouldContainTheUser() {
@@ -20,6 +21,15 @@ class InMemoryAuthenticatedUserRepositoryTest {
         inMemoryAuthenticatedUserRepository.add(account);
 
         assertTrue(inMemoryAuthenticatedUserRepository.isAuthenticated(account));
+    }
+
+    @Test
+    void add_whenUserIsAddedToInMemoryAuthenticatedRepository_repositoryShouldContainAnDifferentAccountWithSameCredentials() {
+        InMemoryAuthenticatedUserRepository inMemoryAuthenticatedUserRepository = new InMemoryAuthenticatedUserRepository();
+
+        inMemoryAuthenticatedUserRepository.add(account);
+
+        assertTrue(inMemoryAuthenticatedUserRepository.isAuthenticated(differentAccountWithSameCredentials));
     }
 
     @Test

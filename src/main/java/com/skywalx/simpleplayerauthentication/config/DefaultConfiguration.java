@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.player.PlayerEvent;
 import org.reflections.Reflections;
 
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -29,10 +30,11 @@ public class DefaultConfiguration {
                 .flatMap(Collection::stream)
                 .map(playerEventClass -> (Class<PlayerEvent>) playerEventClass)
                 .distinct()
+                .filter(playerEventClass -> !Modifier.isAbstract(playerEventClass.getModifiers()))
                 .collect(Collectors.toList());
     }
 
-    private Collection<? extends Class<? extends Object>> convertKeyToPlayerEventClasses(String playerEventClassName) {
+    private Collection<? extends Class<?>> convertKeyToPlayerEventClasses(String playerEventClassName) {
         if (playerEventClassName.equalsIgnoreCase("ALL")) {
             Reflections reflections = new Reflections("org.bukkit.event.player");
             return reflections.getSubTypesOf(PlayerEvent.class);

@@ -1,6 +1,7 @@
 package com.skywalx.simpleplayerauthentication.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.player.PlayerBucketEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -30,16 +31,28 @@ class DefaultConfigurationTest {
     }
 
     @Test
-    void getBlacklistedEventsBeforeAuthentication_givenAllEntryInConfig_shouldReturnAllPlayerEventClasses() {
+    void getBlacklistedEventsBeforeAuthentication_givenAllEntryInConfig_shouldReturnAllDistinctPlayerEventClasses() {
         FileConfiguration configMock = mock(FileConfiguration.class);
         when(configMock.getStringList("blacklisted-events-before-login")).thenReturn(List.of("PlayerMoveEvent", "ALL"));
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(configMock, logger);
         Reflections reflections = new Reflections("org.bukkit.event.player");
         Set<Class<? extends PlayerEvent>> expectedPlayerEventClasses = reflections.getSubTypesOf(PlayerEvent.class);
+        expectedPlayerEventClasses.forEach(aClass -> System.out.println(aClass.getName()));
 
         List<Class<? extends PlayerEvent>> playerEventClasses = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();
 
         assertThat(playerEventClasses).containsExactlyInAnyOrderElementsOf(expectedPlayerEventClasses);
+    }
+
+    @Test
+    void getBlacklistedEventsBeforeAuthentication_givenAbstractPlayerEventInConfig_shouldFilterOutAbstractClass() {
+        FileConfiguration configMock = mock(FileConfiguration.class);
+        when(configMock.getStringList("blacklisted-events-before-login")).thenReturn(List.of("PlayerEvent", "PlayerBucketEvent", "PlayerMoveEvent"));
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration(configMock, logger);
+
+        List<Class<? extends PlayerEvent>> playerEventClasses = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();
+
+        assertThat(playerEventClasses).doesNotContain(PlayerEvent.class, PlayerBucketEvent.class);
     }
 
     @Test

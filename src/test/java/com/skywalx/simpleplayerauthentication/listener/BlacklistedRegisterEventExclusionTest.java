@@ -1,5 +1,6 @@
-package com.skywalx.simpleplayerauthentication.event;
+package com.skywalx.simpleplayerauthentication.listener;
 
+import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedRegisterEventExclusion;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.junit.jupiter.api.Test;
 

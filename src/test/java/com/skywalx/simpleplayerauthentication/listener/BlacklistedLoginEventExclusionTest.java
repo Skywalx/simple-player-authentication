@@ -1,12 +1,10 @@
-package com.skywalx.simpleplayerauthentication.event;
+package com.skywalx.simpleplayerauthentication.listener;
 
-import org.assertj.core.api.Assertions;
-import org.bukkit.entity.Player;
+import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedLoginEventExclusion;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

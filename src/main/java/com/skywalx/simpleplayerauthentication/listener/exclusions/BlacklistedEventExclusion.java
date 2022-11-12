@@ -1,4 +1,4 @@
-package com.skywalx.simpleplayerauthentication.event;
+package com.skywalx.simpleplayerauthentication.listener.exclusions;
 
 import org.bukkit.event.Event;
 

@@ -10,27 +10,28 @@ import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 @CommandAlias("unregister")
 @Description("Command to unregister an existing account.")
 public class UnregisterCommand extends BaseCommand {
 
     private final AccountRepository accountRepository;
-    private final HashingService hashingService;
 
-    public UnregisterCommand(AccountRepository accountRepository, HashingService hashingService) {
+    public UnregisterCommand(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-        this.hashingService = hashingService;
     }
 
     @Default
     @Syntax("Usage /unregister [password]")
     public void onUnregisterCommand(Player player, String password) {
-        Account account = new Account(player.getUniqueId(), password, hashingService);
-        if (!accountRepository.exists(account)) {
+        Optional<Account> optionalUserAccount = accountRepository.findByUuid(player.getUniqueId());
+        if (optionalUserAccount.isEmpty()) {
             player.sendMessage("§6There is no account registered for " + player.getDisplayName() + "!");
             return;
         }
 
+        Account account = optionalUserAccount.get();
         if (!account.doesPasswordMatch(password)) {
             player.sendMessage("§6The given password is incorrect!");
             return;

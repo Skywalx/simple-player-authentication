@@ -20,6 +20,9 @@ login-attempts: 3
 #What happens after failing the maximum attempts
 punishment: "kick %PLAYERNAME% §cYou have reached maximum login attempts"
 
+#Whether or not to log the player out automatically whenever leaving the server
+log-player-out-on-leave: true
+
 ########################
 #Advanced Settings
 ########################

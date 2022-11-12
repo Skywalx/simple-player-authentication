@@ -99,7 +99,9 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
             }
         });
 
-        Bukkit.getPluginManager().registerEvents(new PlayerUnAuthenticateOnLogoutListener(authenticatedUserRepository), this);
+        if (getConfig().getBoolean("log-player-out-on-leave")) {
+            Bukkit.getPluginManager().registerEvents(new PlayerUnAuthenticateOnLogoutListener(authenticatedUserRepository), this);
+        }
 
         logger.info("Plugin has been enabled!");
     }

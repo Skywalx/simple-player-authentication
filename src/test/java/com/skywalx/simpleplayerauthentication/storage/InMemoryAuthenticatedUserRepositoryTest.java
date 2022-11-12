@@ -5,8 +5,8 @@ import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryAuthenticatedUserRepositoryTest {
 
@@ -51,4 +51,15 @@ class InMemoryAuthenticatedUserRepositoryTest {
 
         assertFalse(inMemoryAuthenticatedUserRepository.isAuthenticated(account));
     }
+
+    @Test
+    void remove_whenUserWithSameUuidIsRemovedFromInMemoryAuthenticatedRepository_repositoryShouldNotContainTheUserAnymore() {
+        InMemoryAuthenticatedUserRepository inMemoryAuthenticatedUserRepository = new InMemoryAuthenticatedUserRepository();
+        inMemoryAuthenticatedUserRepository.add(account);
+
+        inMemoryAuthenticatedUserRepository.remove(new Account(account.uuid(), ""));
+
+        assertFalse(inMemoryAuthenticatedUserRepository.isAuthenticated(account));
+    }
+
 }

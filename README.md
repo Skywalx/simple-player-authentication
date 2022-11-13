@@ -48,6 +48,7 @@
 - Notify user every x time that /login should be used when not authenticated yet
 - 2FA, both inclusive and exclusive option (configurable) with credentials login
 - Allow defining a regex expression in the config for password policy
+- Add PlaceholderAPI support for messages
 
 :exclamation: Attention: This is not a decisive list! There is no roadmap for this Minecraft plugin so new features
 might not have been listed here or features listed here might not be implemented! :exclamation:

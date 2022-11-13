@@ -6,6 +6,8 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Syntax;
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration.MessageKey;
 import com.skywalx.simpleplayerauthentication.gui.UnregisterGui;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
@@ -21,11 +23,13 @@ public class UnregisterCommand extends BaseCommand {
     private final AccountRepository accountRepository;
     private final SimplePlayerAuthenticationPlugin plugin;
     private final AuthenticatedUserRepository authenticationRepository;
+    private final MessageConfiguration messageConfiguration;
 
-    public UnregisterCommand(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, AuthenticatedUserRepository authenticationRepository) {
+    public UnregisterCommand(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, AuthenticatedUserRepository authenticationRepository, MessageConfiguration messageConfiguration) {
         this.accountRepository = accountRepository;
         this.plugin = plugin;
         this.authenticationRepository = authenticationRepository;
+        this.messageConfiguration = messageConfiguration;
     }
 
     @Default
@@ -33,12 +37,12 @@ public class UnregisterCommand extends BaseCommand {
     public void onUnregisterCommand(Player player) {
         Optional<Account> optionalUserAccount = accountRepository.findByUuid(player.getUniqueId());
         if (optionalUserAccount.isEmpty()) {
-            player.sendMessage("§6There is no account registered for " + player.getDisplayName() + "!");
+            messageConfiguration.send(MessageKey.REGISTER, player);
             return;
         }
 
         Account account = optionalUserAccount.get();
-        UnregisterGui unregisterGui = new UnregisterGui(plugin, accountRepository, authenticationRepository, account);
+        UnregisterGui unregisterGui = new UnregisterGui(plugin, accountRepository, authenticationRepository, account, messageConfiguration);
         unregisterGui.open(player);
     }
 }

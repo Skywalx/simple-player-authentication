@@ -1,10 +1,11 @@
 package com.skywalx.simpleplayerauthentication.gui;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration.MessageKey;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import net.wesjd.anvilgui.AnvilGUI;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class LoginGui {
@@ -12,11 +13,13 @@ public class LoginGui {
     private final SimplePlayerAuthenticationPlugin plugin;
     private final AuthenticatedUserRepository authenticationRepository;
     private final Account account;
+    private final MessageConfiguration messageConfiguration;
 
-    public LoginGui(SimplePlayerAuthenticationPlugin plugin, AuthenticatedUserRepository authenticationRepository, Account account) {
+    public LoginGui(SimplePlayerAuthenticationPlugin plugin, AuthenticatedUserRepository authenticationRepository, Account account, MessageConfiguration messageConfiguration) {
         this.plugin = plugin;
         this.authenticationRepository = authenticationRepository;
         this.account = account;
+        this.messageConfiguration = messageConfiguration;
     }
 
     public void open(Player playerOpener) {
@@ -30,7 +33,7 @@ public class LoginGui {
                     }
 
                     authenticationRepository.add(account);
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7You successfully logged in!"));
+                    messageConfiguration.send(MessageKey.SUCCESSFUL_LOGIN, player);
                     return AnvilGUI.Response.close();
                 })
                 .open(playerOpener);

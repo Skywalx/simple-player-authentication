@@ -1,6 +1,7 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
@@ -53,12 +54,13 @@ class LoginCommandTest {
 
     @Test
     void onLoginCommand_whenPlayerIsNotRegistered_shouldInformPlayerToMakeAccount() {
-        LoginCommand loginCommand = new LoginCommand(plugin, accountRepository, authenticatedUserRepository);
+        MessageConfiguration messageConfig = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+        LoginCommand loginCommand = new LoginCommand(plugin, accountRepository, authenticatedUserRepository, messageConfig);
 
         loginCommand.onLoginCommand(player);
 
         verify(authenticatedUserRepository, never()).add(any(Account.class));
-        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &cusername\n&7Usage: &c/login [password]&7"));
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &cusername\n&7Usage: &c/register&7"));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
@@ -20,12 +21,14 @@ import static org.mockito.Mockito.*;
 class RegisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yaml";
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
     private final HashingService hashingService = new ArgonHashingService();
     private Player player;
     private File file;
     private YamlConfiguration yamlConfiguration;
     private AccountRepository accountRepository;
     private SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);
+
 
     @BeforeEach
     void setup() {
@@ -48,12 +51,12 @@ class RegisterCommandTest {
     @Test
     void onRegisterPassword_whenAccountAlreadyExists_shouldReturnMessageToPlayer() throws IOException {
         String password = "minecraft123";
-        RegisterCommand registerCommand = new RegisterCommand(plugin, accountRepository, hashingService);
+        RegisterCommand registerCommand = new RegisterCommand(plugin, accountRepository, hashingService, messageConfiguration);
         yamlConfiguration.set(player.getUniqueId() + ".password", hashingService.hash(password));
         yamlConfiguration.save(file);
 
         registerCommand.onRegisterCommand(player);
 
-        verify(player).sendMessage("§6The account for jensoman7 is already registered!");
+        verify(player).sendMessage("§cThe account for jensoman7 is already registered!");
     }
 }

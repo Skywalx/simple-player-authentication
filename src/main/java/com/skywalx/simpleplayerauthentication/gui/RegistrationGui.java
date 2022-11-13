@@ -1,6 +1,8 @@
 package com.skywalx.simpleplayerauthentication.gui;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration.MessageKey;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
@@ -14,11 +16,13 @@ public class RegistrationGui {
     private final SimplePlayerAuthenticationPlugin plugin;
     private final AccountRepository accountRepository;
     private final HashingService hashingService;
+    private final MessageConfiguration messageConfiguration;
 
-    public RegistrationGui(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, HashingService hashingService) {
+    public RegistrationGui(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, HashingService hashingService, MessageConfiguration messageConfiguration) {
         this.plugin = plugin;
         this.accountRepository = accountRepository;
         this.hashingService = hashingService;
+        this.messageConfiguration = messageConfiguration;
     }
 
     public void open(Player playerOpener) {
@@ -55,7 +59,7 @@ public class RegistrationGui {
                         Account account = new Account(player.getUniqueId(), password, hashingService);
                         try {
                             accountRepository.save(account);
-                            player.sendMessage("§6You have successfully registered " + player.getDisplayName() + "!");
+                            messageConfiguration.send(MessageKey.SUCCESSFUL_REGISTRATION, player);
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
                             return AnvilGUI.Response.text("Failed to write to database!");

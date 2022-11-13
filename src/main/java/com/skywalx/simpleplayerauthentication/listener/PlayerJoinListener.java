@@ -1,9 +1,10 @@
 package com.skywalx.simpleplayerauthentication.listener;
 
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration.MessageKey;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,10 +16,12 @@ public class PlayerJoinListener implements Listener {
 
     private final AuthenticatedUserRepository authenticationRepository;
     private final AccountRepository accountRepository;
+    private final MessageConfiguration messageConfiguration;
 
-    public PlayerJoinListener(AuthenticatedUserRepository authenticationRepository, AccountRepository accountRepository) {
+    public PlayerJoinListener(AuthenticatedUserRepository authenticationRepository, AccountRepository accountRepository, MessageConfiguration messageConfiguration) {
         this.authenticationRepository = authenticationRepository;
         this.accountRepository = accountRepository;
+        this.messageConfiguration = messageConfiguration;
     }
 
     @EventHandler
@@ -26,7 +29,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         Optional<Account> optionalAccount = accountRepository.findByUuid(player.getUniqueId());
         if (optionalAccount.isEmpty()) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/register&7").replaceAll("%PLAYERNAME%", player.getDisplayName()));
+            messageConfiguration.send(MessageKey.REGISTER, player);
             return;
         }
 
@@ -35,7 +38,7 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/login [password]&7").replaceAll("%PLAYERNAME%", player.getDisplayName()));
+        messageConfiguration.send(MessageKey.LOGIN, player);
     }
 
 }

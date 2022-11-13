@@ -1,14 +1,17 @@
 package com.skywalx.simpleplayerauthentication.listener;
 
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,6 +20,7 @@ import static org.mockito.Mockito.*;
 class PlayerJoinListenerTest {
 
     private static final UUID PLAYER_UUID = UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d");
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
 
     @Test
     void onPlayerJoin_whenPlayerIsNotAuthenticated_shouldInformUserToLogin() {
@@ -27,11 +31,11 @@ class PlayerJoinListenerTest {
         Player player = mock(Player.class);
         when(player.getDisplayName()).thenReturn("username");
         when(player.getUniqueId()).thenReturn(PLAYER_UUID);
-        PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository);
+        PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository, messageConfiguration);
 
         playerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, "whatever"));
 
-        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &cusername\n&7Usage: &c/login [password]&7"));
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &cusername\n&7Usage: &c/login&7"));
     }
 
     @Test
@@ -43,7 +47,7 @@ class PlayerJoinListenerTest {
         Player player = mock(Player.class);
         when(player.getDisplayName()).thenReturn("username");
         when(player.getUniqueId()).thenReturn(PLAYER_UUID);
-        PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository);
+        PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository, messageConfiguration);
 
         playerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, "whatever"));
 
@@ -58,7 +62,7 @@ class PlayerJoinListenerTest {
         Player player = mock(Player.class);
         when(player.getDisplayName()).thenReturn("username");
         when(player.getUniqueId()).thenReturn(PLAYER_UUID);
-        PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository);
+        PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository, messageConfiguration);
 
         playerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, "whatever"));
 

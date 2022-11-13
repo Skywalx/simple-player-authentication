@@ -6,6 +6,7 @@ import com.skywalx.simpleplayerauthentication.command.LogoutCommand;
 import com.skywalx.simpleplayerauthentication.command.RegisterCommand;
 import com.skywalx.simpleplayerauthentication.command.UnregisterCommand;
 import com.skywalx.simpleplayerauthentication.config.DefaultConfiguration;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.listener.PlayerJoinListener;
 import com.skywalx.simpleplayerauthentication.listener.PlayerUnAuthenticateOnLogoutListener;
 import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedEventExclusion;
@@ -19,6 +20,7 @@ import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.storage.InMemoryAuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -46,11 +48,23 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
 
         HashingService hashingService = configuredHashingService();
         AccountRepository accountRepository = configuredAccountRepository();
+        MessageConfiguration messageConfiguration = configuredMessages();
 
-        registerCommands(hashingService, accountRepository);
-        registerListeners(accountRepository);
+        registerCommands(hashingService, accountRepository, messageConfiguration);
+        registerListeners(accountRepository, messageConfiguration);
 
         logger.info("Plugin has been enabled!");
+    }
+
+    private MessageConfiguration configuredMessages() {
+        File messagesFile = new File(getDataFolder(), "messages.yml");
+        if (!messagesFile.exists()) {
+            messagesFile.getParentFile().mkdirs();
+            saveResource("messages.yml", false);
+        }
+
+        FileConfiguration messagesConfiguration = YamlConfiguration.loadConfiguration(messagesFile);
+        return new MessageConfiguration(messagesConfiguration);
     }
 
     private AccountRepository configuredAccountRepository() {
@@ -88,15 +102,15 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         return hashingService;
     }
 
-    private void registerCommands(HashingService hashingService, AccountRepository accountRepository) {
+    private void registerCommands(HashingService hashingService, AccountRepository accountRepository, MessageConfiguration messageConfiguration) {
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
-        bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, hashingService));
-        bukkitCommandManager.registerCommand(new UnregisterCommand(this, accountRepository, authenticatedUserRepository));
-        bukkitCommandManager.registerCommand(new LoginCommand(this, accountRepository, authenticatedUserRepository));
-        bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository));
+        bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, hashingService, messageConfiguration));
+        bukkitCommandManager.registerCommand(new UnregisterCommand(this, accountRepository, authenticatedUserRepository, messageConfiguration));
+        bukkitCommandManager.registerCommand(new LoginCommand(this, accountRepository, authenticatedUserRepository, messageConfiguration));
+        bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository, messageConfiguration));
     }
 
-    private void registerListeners(AccountRepository accountRepository) {
+    private void registerListeners(AccountRepository accountRepository, MessageConfiguration messageConfiguration) {
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(getConfig(), logger);
         List<Class<? extends PlayerEvent>> blacklistedPlayerEvents = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();
         List<BlacklistedEventExclusion> blacklistExclusions = List.of(new BlacklistedLoginEventExclusion(), new BlacklistedRegisterEventExclusion());
@@ -117,7 +131,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         if (getConfig().getBoolean("log-player-out-on-leave")) {
             Bukkit.getPluginManager().registerEvents(new PlayerUnAuthenticateOnLogoutListener(authenticatedUserRepository), this);
         }
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(authenticatedUserRepository, accountRepository), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(authenticatedUserRepository, accountRepository, messageConfiguration), this);
     }
 
     @Override

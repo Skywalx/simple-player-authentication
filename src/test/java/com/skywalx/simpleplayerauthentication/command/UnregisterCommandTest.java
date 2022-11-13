@@ -1,12 +1,14 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +25,7 @@ class UnregisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yaml";
     private final HashingService hashingService = new ArgonHashingService();
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
     private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
     private final SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);
     private Player player;
@@ -56,10 +59,10 @@ class UnregisterCommandTest {
         Player otherPlayer = mock(Player.class);
         when(otherPlayer.getUniqueId()).thenReturn(UUID.fromString("67240b03-a3b9-4006-84d2-b335a4917e4c"));
         when(otherPlayer.getDisplayName()).thenReturn("HungryDev");
-        UnregisterCommand unregisterCommand = new UnregisterCommand(plugin, accountRepository, mock(AuthenticatedUserRepository.class));
+        UnregisterCommand unregisterCommand = new UnregisterCommand(plugin, accountRepository, mock(AuthenticatedUserRepository.class), messageConfiguration);
 
         unregisterCommand.onUnregisterCommand(otherPlayer);
 
-        verify(otherPlayer).sendMessage("§6There is no account registered for HungryDev!");
+        verify(otherPlayer).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &cHungryDev\n&7Usage: &c/register&7"));
     }
 }

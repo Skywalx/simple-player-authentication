@@ -26,7 +26,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         Optional<Account> optionalAccount = accountRepository.findByUuid(player.getUniqueId());
         if (optionalAccount.isEmpty()) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\\nUsername: &c%PLAYERNAME%\\n&7Usage: &c/register [password] [password]&7"));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/register&7").replaceAll("%PLAYERNAME%", player.getDisplayName()));
             return;
         }
 
@@ -35,7 +35,7 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\\nUsername: &c%PLAYERNAME%\\n&7Usage: &c/login [password]&7"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/login [password]&7").replaceAll("%PLAYERNAME%", player.getDisplayName()));
     }
 
 }

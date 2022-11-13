@@ -25,12 +25,13 @@ class PlayerJoinListenerTest {
         when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "minecraft123", new ArgonHashingService())));
         when(authenticationRepository.isAuthenticated(any())).thenReturn(false);
         Player player = mock(Player.class);
+        when(player.getDisplayName()).thenReturn("username");
         when(player.getUniqueId()).thenReturn(PLAYER_UUID);
         PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository);
 
         playerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, "whatever"));
 
-        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\\nUsername: &c%PLAYERNAME%\\n&7Usage: &c/login [password]&7"));
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &cusername\n&7Usage: &c/login [password]&7"));
     }
 
     @Test
@@ -40,12 +41,13 @@ class PlayerJoinListenerTest {
         when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "minecraft123", new ArgonHashingService())));
         when(authenticationRepository.isAuthenticated(any())).thenReturn(true);
         Player player = mock(Player.class);
+        when(player.getDisplayName()).thenReturn("username");
         when(player.getUniqueId()).thenReturn(PLAYER_UUID);
         PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository);
 
         playerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, "whatever"));
 
-        verify(player, never()).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\\nUsername: &c%PLAYERNAME%\\n&7Usage: &c/login [password]&7"));
+        verify(player, never()).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &cusername\n&7Usage: &c/login [password]&7"));
     }
 
     @Test
@@ -54,12 +56,13 @@ class PlayerJoinListenerTest {
         AuthenticatedUserRepository authenticationRepository = mock(AuthenticatedUserRepository.class);
         when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.empty());
         Player player = mock(Player.class);
+        when(player.getDisplayName()).thenReturn("username");
         when(player.getUniqueId()).thenReturn(PLAYER_UUID);
         PlayerJoinListener playerJoinListener = new PlayerJoinListener(authenticationRepository, accountRepository);
 
         playerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, "whatever"));
 
-        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\\nUsername: &c%PLAYERNAME%\\n&7Usage: &c/register [password] [password]&7"));
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &cusername\n&7Usage: &c/register&7"));
     }
 
 }

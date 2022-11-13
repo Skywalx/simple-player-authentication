@@ -6,6 +6,7 @@ import com.skywalx.simpleplayerauthentication.command.LogoutCommand;
 import com.skywalx.simpleplayerauthentication.command.RegisterCommand;
 import com.skywalx.simpleplayerauthentication.command.UnregisterCommand;
 import com.skywalx.simpleplayerauthentication.config.DefaultConfiguration;
+import com.skywalx.simpleplayerauthentication.listener.PlayerJoinListener;
 import com.skywalx.simpleplayerauthentication.listener.PlayerUnAuthenticateOnLogoutListener;
 import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedEventExclusion;
 import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedEventExecutor;
@@ -81,7 +82,6 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         bukkitCommandManager.registerCommand(new LoginCommand(accountRepository, authenticatedUserRepository));
         bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository));
 
-
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(getConfig(), logger);
         List<Class<? extends PlayerEvent>> blacklistedPlayerEvents = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();
         List<BlacklistedEventExclusion> blacklistExclusions = List.of(new BlacklistedLoginEventExclusion(), new BlacklistedRegisterEventExclusion());
@@ -102,6 +102,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         if (getConfig().getBoolean("log-player-out-on-leave")) {
             Bukkit.getPluginManager().registerEvents(new PlayerUnAuthenticateOnLogoutListener(authenticatedUserRepository), this);
         }
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(authenticatedUserRepository, accountRepository), this);
 
         logger.info("Plugin has been enabled!");
     }

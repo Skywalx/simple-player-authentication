@@ -5,10 +5,7 @@ import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import net.wesjd.anvilgui.AnvilGUI;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.IOException;
 
@@ -35,23 +32,6 @@ public class RegistrationGui {
                     return AnvilGUI.Response.close();
                 })
                 .open(playerOpener);
-    }
-
-    private ItemStack closeItem() {
-        ItemStack closeItem = new ItemStack(Material.BARRIER);
-
-        ItemMeta closeItemMeta = closeItem.getItemMeta();
-        closeItemMeta.setDisplayName("§cClose");
-        closeItem.setItemMeta(closeItemMeta);
-        return closeItem;
-    }
-
-    private ItemStack confirmationItem() {
-        ItemStack accept = new ItemStack(Material.GREEN_TERRACOTTA);
-        ItemMeta itemMeta = accept.getItemMeta();
-        itemMeta.setDisplayName("§aAccept");
-        accept.setItemMeta(itemMeta);
-        return accept;
     }
 
     class Confirmation {

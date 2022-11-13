@@ -11,6 +11,6 @@ public class BlacklistedLoginEventExclusion implements BlacklistedEventExclusion
             return false;
         }
 
-        return commandEvent.getMessage().startsWith("/login ");
+        return commandEvent.getMessage().startsWith("/login");
     }
 }

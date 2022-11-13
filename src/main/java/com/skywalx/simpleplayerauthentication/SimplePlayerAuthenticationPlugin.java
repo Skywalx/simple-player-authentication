@@ -92,7 +92,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository));
-        bukkitCommandManager.registerCommand(new LoginCommand(accountRepository, authenticatedUserRepository));
+        bukkitCommandManager.registerCommand(new LoginCommand(this, accountRepository, authenticatedUserRepository));
         bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository));
     }
 

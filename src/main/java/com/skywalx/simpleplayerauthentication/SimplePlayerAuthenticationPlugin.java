@@ -39,24 +39,21 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        HashingService hashingService = null;
-        AccountRepository accountRepository = null;
-
         logger.info("Enabling plugin...");
 
         this.getConfig().options().copyDefaults();
         this.saveDefaultConfig();
 
-        String hashingServiceName = this.getConfig().getString("hashing-algorithm");
+        HashingService hashingService = configuredHashingService();
+        AccountRepository accountRepository = configuredAccountRepository();
 
-        if (!"argon2".equalsIgnoreCase(hashingServiceName)) {
-            logger.severe("The 'hashing-algorithm' has not been defined or is defined incorrectly!");
-            this.getServer().shutdown();
-        }
+        registerCommands(hashingService, accountRepository);
+        registerListeners(accountRepository);
 
-        hashingService = new ArgonHashingService();
-        logger.info("- Hashing service: " + hashingServiceName);
+        logger.info("Plugin has been enabled!");
+    }
 
+    private AccountRepository configuredAccountRepository() {
         String accountRepositoryType = this.getConfig().getString("repository-type");
 
         if (!"yaml".equalsIgnoreCase(accountRepositoryType)) {
@@ -73,15 +70,33 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
             }
         }
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(accountsFile);
-        accountRepository = new YamlAccountRepository(accountsFile, yamlConfiguration);
+        AccountRepository accountRepository = new YamlAccountRepository(accountsFile, yamlConfiguration);
         logger.info("- Repository type: " + accountRepositoryType);
+        return accountRepository;
+    }
 
+    private HashingService configuredHashingService() {
+        String hashingServiceName = this.getConfig().getString("hashing-algorithm");
+
+        if (!"argon2".equalsIgnoreCase(hashingServiceName)) {
+            logger.severe("The 'hashing-algorithm' has not been defined or is defined incorrectly!");
+            this.getServer().shutdown();
+        }
+
+        HashingService hashingService = new ArgonHashingService();
+        logger.info("- Hashing service: " + hashingServiceName);
+        return hashingService;
+    }
+
+    private void registerCommands(HashingService hashingService, AccountRepository accountRepository) {
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, hashingService));
         bukkitCommandManager.registerCommand(new UnregisterCommand(accountRepository));
         bukkitCommandManager.registerCommand(new LoginCommand(accountRepository, authenticatedUserRepository));
         bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository));
+    }
 
+    private void registerListeners(AccountRepository accountRepository) {
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(getConfig(), logger);
         List<Class<? extends PlayerEvent>> blacklistedPlayerEvents = defaultConfiguration.getBlacklistedEventsBeforeAuthentication();
         List<BlacklistedEventExclusion> blacklistExclusions = List.of(new BlacklistedLoginEventExclusion(), new BlacklistedRegisterEventExclusion());
@@ -103,8 +118,6 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerUnAuthenticateOnLogoutListener(authenticatedUserRepository), this);
         }
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(authenticatedUserRepository, accountRepository), this);
-
-        logger.info("Plugin has been enabled!");
     }
 
     @Override

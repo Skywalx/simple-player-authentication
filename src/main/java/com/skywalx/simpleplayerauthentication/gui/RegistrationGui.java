@@ -25,7 +25,7 @@ public class RegistrationGui {
         new AnvilGUI.Builder()
                 .plugin(plugin)
                 .title("Choose a password")
-                .text("enter")
+                .text("Register")
                 .onComplete((player, password) -> {
                     Confirmation confirmation = new Confirmation(password);
                     confirmation.open(playerOpener);
@@ -46,7 +46,7 @@ public class RegistrationGui {
             new AnvilGUI.Builder()
                     .plugin(plugin)
                     .title("Retype password")
-                    .text("enter")
+                    .text("Confirm")
                     .onComplete((player, passwordConfirmation) -> {
                         if (!password.equals(passwordConfirmation)) {
                             return AnvilGUI.Response.text("Not equal!");

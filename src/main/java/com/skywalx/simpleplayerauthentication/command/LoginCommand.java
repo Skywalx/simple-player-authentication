@@ -35,7 +35,6 @@ public class LoginCommand extends BaseCommand {
         Optional<Account> optionalAccount = accountRepository.findByUuid(player.getUniqueId());
         if (optionalAccount.isEmpty()) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please login before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/login [password]&7").replaceAll("%PLAYERNAME%", player.getDisplayName()));
-            ;
             return;
         }
 

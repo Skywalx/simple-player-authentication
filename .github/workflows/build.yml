@@ -42,3 +42,10 @@ jobs:
       with:
         name: simple-player-authentication.zip
         path: build/libs/simple-player-authentication-all.jar
+        
+    - name: Release on GitHub
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/libs/simple-player-authentication-all.jar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,51 @@
+############################################################
+# +------------------------------------------------------+ #
+# |             Simple Player Authentication             | #
+# +------------------------------------------------------+ #
+############################################################
+
+########################
+#Basic Settings
+########################
+
+#Minimal length you want the passwords to be (0 = no minimal).
+minimal-password-length: 4
+
+#Have the players use numbers in their password.
+numbers-in-password-required: true
+
+#The amount of attempts that can be made to login.
+login-attempts: 3
+
+#What happens after failing the maximum attempts
+punishment: "kick %PLAYERNAME% §cYou have reached maximum login attempts"
+
+#Whether or not to log the player out automatically whenever leaving the server
+log-player-out-on-leave: true
+
+########################
+#Advanced Settings
+########################
+
+# Attention! These are more complicated settings that are better left alone if you do not understand them!
+
+#Which algorithm has to be used for hashing the password.
+#Available algorithms: argon2, scrypt, bcrypt, pbkdf2
+hashing-algorithm: "argon2"
+
+#Which repository has to be used to store the accounts.
+# Available repositories: yaml
+repository-type: "yaml"
+
+# Which player events should be cancelled for a player when not authenticated yet?
+#
+# List of possible options: AsyncPlayerChatEvent, PlayerAdvancementDoneEvent, PlayerAnimationEvent, PlayerBedEnterEvent, PlayerBedLeaveEvent, PlayerBucketEntityEvent, PlayerBucketEvent,
+# PlayerChangedMainHandEvent, PlayerChangedWorldEvent, PlayerChannelEvent, PlayerChatEvent, PlayerChatTabCompleteEvent, PlayerCommandPreprocessEvent, PlayerCommandSendEvent, PlayerDropItemEvent,
+# PlayerEditBookEvent, PlayerEggThrowEvent, PlayerExpChangeEvent, PlayerFishEvent, PlayerGameModeChangeEvent, PlayerHarvestBlockEvent, PlayerHideEntityEvent, PlayerInteractEntityEvent, PlayerInteractEvent,
+# PlayerItemBreakEvent, PlayerItemConsumeEvent, PlayerItemDamageEvent, PlayerItemHeldEvent, PlayerItemMendEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLevelChangeEvent, PlayerLocaleChangeEvent, PlayerLoginEvent,
+# PlayerMoveEvent, PlayerPickupItemEvent, PlayerQuitEvent, PlayerRecipeDiscoverEvent, PlayerResourcePackStatusEvent, PlayerRespawnEvent, PlayerRiptideEvent, PlayerShearEntityEvent, PlayerShowEntityEvent,
+# PlayerSpawnLocationEvent, PlayerStatisticIncrementEvent, PlayerSwapHandItemsEvent, PlayerTakeLecternBookEvent, PlayerToggleFlightEvent, PlayerToggleSneakEvent, PlayerToggleSprintEvent, PlayerVelocityEvent
+#
+# Or if you enter the option "ALL", it will cancel all of these subtypes: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEvent.html
+blacklisted-events-before-login:
+  - "ALL"

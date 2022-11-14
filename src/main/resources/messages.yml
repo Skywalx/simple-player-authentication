@@ -1,0 +1,33 @@
+########################
+#Messages
+########################
+
+#When the player first time joins the server. This message will appear to register the player.
+register: "&7Please register before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/register&7"
+
+#When the player revisits the server. He will be asked to login with this message.
+login: "&7Please login before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/login&7"
+
+#When the account already has been registered by someone.
+already-registered: "&cThe account for %PLAYERNAME% is already registered!"
+
+#When the player already loggin in.
+already-logged-in: "&cYou already logged in!"
+
+#When the two given passwords while registering don't match.
+not-matching-password: "&cThe passwords do no match!"
+
+#When the given password while logging in is incorrect.
+wrong-password: "&cThe given password is incorrect!"
+
+#When the player has successfully registered his account.
+successful-registration: "&7You have successfully registered &c%PLAYERNAME%&7!"
+
+#When the player has successfully logged in his account.
+successful-login: "&7You successfully logged in!"
+
+#When the player unregisters his account.
+successful-unregistration: "&cYour account has been unregistered!"
+
+#When the player logs out of his session
+successful-logout: "&7You are now logged out!"

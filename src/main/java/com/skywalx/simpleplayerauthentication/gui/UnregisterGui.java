@@ -32,7 +32,7 @@ public class UnregisterGui {
                 .text("Unregister")
                 .onComplete((player, password) -> {
                     if (!account.doesPasswordMatch(password)) {
-                        return AnvilGUI.Response.text("Incorrect!");
+                        return AnvilGUI.Response.text(messagesConfiguration.getFormattedMessage(MessageKey.NOT_MATCHING_PASSWORD));
                     }
 
                     authenticationRepository.remove(account);

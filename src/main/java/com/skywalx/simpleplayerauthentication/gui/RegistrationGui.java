@@ -53,7 +53,7 @@ public class RegistrationGui {
                     .text("Confirm")
                     .onComplete((player, passwordConfirmation) -> {
                         if (!password.equals(passwordConfirmation)) {
-                            return AnvilGUI.Response.text("Not equal!");
+                            return AnvilGUI.Response.text(messageConfiguration.getFormattedMessage(MessageKey.NOT_MATCHING_PASSWORD));
                         }
 
                         Account account = new Account(player.getUniqueId(), password, hashingService);

@@ -6,6 +6,7 @@ import com.skywalx.simpleplayerauthentication.service.AccountRepository;
 import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.HashingService;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.AfterEach;
@@ -57,6 +58,6 @@ class RegisterCommandTest {
 
         registerCommand.onRegisterCommand(player);
 
-        verify(player).sendMessage("§cThe account for jensoman7 is already registered!");
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThe account for jensoman7 is already registered!"));
     }
 }

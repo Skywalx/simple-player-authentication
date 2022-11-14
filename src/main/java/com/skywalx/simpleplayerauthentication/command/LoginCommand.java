@@ -41,6 +41,11 @@ public class LoginCommand extends BaseCommand {
             return;
         }
 
+        if (authenticatedUserRepository.isAuthenticated(optionalAccount.get())) {
+            messageConfiguration.send(MessageKey.ALREADY_LOGGED_IN, player);
+            return;
+        }
+
         Account account = optionalAccount.get();
         LoginGui loginGui = new LoginGui(plugin, authenticatedUserRepository, account, messageConfiguration);
         loginGui.open(player);

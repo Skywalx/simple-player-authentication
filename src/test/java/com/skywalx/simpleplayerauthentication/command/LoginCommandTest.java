@@ -63,4 +63,18 @@ class LoginCommandTest {
         verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &cusername\n&7Usage: &c/register&7"));
     }
 
+    @Test
+    void onLoginCommand_whenPlayerIsAlreadyLoggedIn_shouldInformPlayerThatHeIsAlreadyLoggedIn() {
+        accountRepository.save(account);
+        MessageConfiguration messageConfig = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+        LoginCommand loginCommand = new LoginCommand(plugin, accountRepository, authenticatedUserRepository, messageConfig);
+        when(authenticatedUserRepository.isAuthenticated(account)).thenReturn(true);
+
+        loginCommand.onLoginCommand(player);
+
+        verify(authenticatedUserRepository, never()).add(any(Account.class));
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou already logged in!"));
+    }
+
+
 }

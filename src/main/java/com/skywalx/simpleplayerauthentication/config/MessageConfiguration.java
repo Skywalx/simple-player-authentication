@@ -40,7 +40,6 @@ public class MessageConfiguration {
         ALREADY_LOGGED_IN("already-logged-in"),
         NOT_MATCHING_PASSWORD("not-matching-password"),
         WRONG_PASSWORD("wrong-password"),
-        NOT_LOGGED_IN_FOR_UNREGISTER("not-logged-in-for-unregister"),
         SUCCESSFUL_REGISTRATION("successful-registration"),
         SUCCESSFUL_LOGIN("successful-login"),
         SUCCESSFUL_UNREGISTRATION("successful-unregistration"),

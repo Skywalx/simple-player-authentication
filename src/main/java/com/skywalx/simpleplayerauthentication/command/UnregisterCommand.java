@@ -42,10 +42,6 @@ public class UnregisterCommand extends BaseCommand {
         }
 
         Account account = optionalUserAccount.get();
-        if (!(authenticationRepository.isAuthenticated(account))) {
-            messageConfiguration.send(MessageKey.NOT_LOGGED_IN_FOR_UNREGISTER, player);
-            return;
-        }
 
         UnregisterGui unregisterGui = new UnregisterGui(plugin, accountRepository, authenticationRepository, account, messageConfiguration);
         unregisterGui.open(player);

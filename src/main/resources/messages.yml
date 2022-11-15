@@ -20,9 +20,6 @@ not-matching-password: "&cThe passwords do no match!"
 #When the given password while logging in is incorrect.
 wrong-password: "&cThe given password is incorrect!"
 
-#When the player tries to unregister while not logged in.
-not-logged-in-for-unregister: "&cYou must be logged in before unregistering!"
-
 #When the player has successfully registered his account.
 successful-registration: "&7You have successfully registered &c%PLAYERNAME%&7!"
 

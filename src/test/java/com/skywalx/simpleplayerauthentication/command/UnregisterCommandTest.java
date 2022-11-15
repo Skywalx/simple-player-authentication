@@ -66,15 +66,4 @@ class UnregisterCommandTest {
 
         verify(otherPlayer).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &cHungryDev\n&7Usage: &c/register&7"));
     }
-
-    @Test
-    void onUnregisterCommand_whenPlayerIsNotLoggedInAndAccountDoesExist_shouldReturnMessageToPlayer() {
-        when(authenticatedUserRepository.isAuthenticated(account)).thenReturn(false);
-        UnregisterCommand unregisterCommand = new UnregisterCommand(plugin, accountRepository, mock(AuthenticatedUserRepository.class), messageConfiguration);
-
-        unregisterCommand.onUnregisterCommand(player);
-
-        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou must be logged in before unregistering!"));
-    }
-
 }

@@ -7,6 +7,8 @@ sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 group 'com.skywalx.simpleplayerauthentication'
 
+version = "1.0.0"
+
 compileJava {
     options.compilerArgs += ["-parameters"]
     options.fork = true

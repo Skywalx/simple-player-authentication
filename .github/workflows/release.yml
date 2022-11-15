@@ -7,7 +7,8 @@ on:
     branches: [ "feature/github-workflow" ]
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
 
 jobs:
   build:

@@ -2,9 +2,6 @@
 #Messages
 ########################
 
-#When the instance that sends the message isn't a player (example: Console).
-sender-is-not-player: "&cYou must be a player to execute this command!"
-
 #When the player first time joins the server. This message will appear to register the player.
 register: "&7Please register before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/register&7"
 
@@ -14,35 +11,17 @@ login: "&7Please login before proceeding\nUsername: &c%PLAYERNAME%\n&7Usage: &c/
 #When the account already has been registered by someone.
 already-registered: "&cThe account for %PLAYERNAME% is already registered!"
 
-#When the player already loggin in.
+#When the player already login in.
 already-logged-in: "&cYou already logged in!"
-
-#When the player used the register command wrong.
-wrong-usage-register: "&cUsage: /register"
-
-#When the player used the login command wrong.
-wrong-usage-login: "&cUsage: /login"
-
-#When the player used the unregister command wrong.
-wrong-usage-unregister: "&cUsage: /unregister"
-
-#When the player used the changepassword command wrong.
-wrong-usage-changepassword: "&cUsage: /changepassword [old password] [new password] [new password]"
 
 #When the two given passwords while registering don't match.
 not-matching-password: "&cThe passwords do no match!"
 
-#When configured, if the password is too short, the follow will be send to the player.
-password-to-short: "&cThe given password is too short!"
-
-#When configured, this message will apear when a player has no numbers in his password.
-password-has-no-numbers: "&cThe password has to have at least one number in it"
-
 #When the given password while logging in is incorrect.
 wrong-password: "&cThe given password is incorrect!"
 
-#When a player gives the wrong old password when using changepassword.
-wrong-old-password: "&cThe old password is incorrect!"
+#When the player tries to unregister while not logged in.
+not-logged-in-for-unregister: "&cYou must be logged in before unregistering!"
 
 #When the player has successfully registered his account.
 successful-registration: "&7You have successfully registered &c%PLAYERNAME%&7!"
@@ -52,9 +31,6 @@ successful-login: "&7You successfully logged in!"
 
 #When the player unregisters his account.
 successful-unregistration: "&cYour account has been unregistered!"
-
-#When the player changed his account's password.
-successful-changed-password: "&7Your password has been changed!"
 
 #When the player logs out of his session
 successful-logout: "&7You are now logged out!"

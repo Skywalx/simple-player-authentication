@@ -29,7 +29,8 @@ public class LoginGui {
                 .text("Login")
                 .onComplete((player, password) -> {
                     if (!account.doesPasswordMatch(password)) {
-                        return AnvilGUI.Response.text(messageConfiguration.getFormattedMessage(MessageKey.WRONG_PASSWORD));
+                        messageConfiguration.send(MessageKey.WRONG_PASSWORD, player);
+                        return AnvilGUI.Response.close();
                     }
 
                     authenticationRepository.add(account);

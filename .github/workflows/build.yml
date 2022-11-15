@@ -9,9 +9,9 @@ name: Build
 
 on:
   push:
-    branches: [ "feature/github-workflow" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "feature/github-workflow" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read

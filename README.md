@@ -9,6 +9,9 @@
 <a href="https://github.com/Skywalx/simple-player-authentication/actions/workflows/build.yml" target="_blank">
     <img src="https://github.com/Skywalx/simple-player-authentication/actions/workflows/build.yml/badge.svg" alt="Build"/>
 </a>
+<a href="https://github.com/Skywalx/simple-player-authentication/releases">
+  <img src="https://img.shields.io/github/v/release/Skywalx/simple-player-authentication" alt="Release">
+</a>
 <a href="https://github.com/Skywalx/item-weight-lib/blob/main/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/Skywalx/item-weight-lib" alt="License"/>
 </a>

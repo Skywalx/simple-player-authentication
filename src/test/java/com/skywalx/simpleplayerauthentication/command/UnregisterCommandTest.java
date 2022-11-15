@@ -23,10 +23,11 @@ import static org.mockito.Mockito.*;
 
 class UnregisterCommandTest {
 
-    private static final String PATH = "src/test/resources/accounts.yaml";
+    private static final String PATH = "src/test/resources/accounts.yml";
     private final HashingService hashingService = new ArgonHashingService();
     private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
     private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
+    private final AuthenticatedUserRepository authenticatedUserRepository = mock(AuthenticatedUserRepository.class);
     private final SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);
     private Player player;
     private File file;
@@ -65,4 +66,15 @@ class UnregisterCommandTest {
 
         verify(otherPlayer).sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Please register before proceeding\nUsername: &cHungryDev\n&7Usage: &c/register&7"));
     }
+
+    @Test
+    void onUnregisterCommand_whenPlayerIsNotLoggedInAndAccountDoesExist_shouldReturnMessageToPlayer() {
+        when(authenticatedUserRepository.isAuthenticated(account)).thenReturn(false);
+        UnregisterCommand unregisterCommand = new UnregisterCommand(plugin, accountRepository, mock(AuthenticatedUserRepository.class), messageConfiguration);
+
+        unregisterCommand.onUnregisterCommand(player);
+
+        verify(player).sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou must be logged in before unregistering!"));
+    }
+
 }

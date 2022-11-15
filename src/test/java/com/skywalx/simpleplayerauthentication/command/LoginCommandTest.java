@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 class LoginCommandTest {
 
-    private static final String PATH = "src/test/resources/accounts.yaml";
+    private static final String PATH = "src/test/resources/accounts.yml";
     private static final UUID PLAYER_UUID = UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d");
     public static final String PLAINTEXT_PASSWORD = "minecraft123";
 

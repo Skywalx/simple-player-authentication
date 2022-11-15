@@ -75,7 +75,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
             this.getServer().shutdown();
         }
 
-        File accountsFile = new File(this.getDataFolder(), "accounts.yaml");
+        File accountsFile = new File(this.getDataFolder(), "accounts.yml");
         if (!accountsFile.exists()) {
             try {
                 accountsFile.createNewFile();

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class YamlAccountRepositoryTest {
 
-    private static final String PATH = "src/test/resources/accounts.yaml";
+    private static final String PATH = "src/test/resources/accounts.yml";
     private final HashingService hashingService = new ArgonHashingService();
     private final Account account = new Account(UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
     private File file;

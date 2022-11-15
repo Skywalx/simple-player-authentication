@@ -29,15 +29,19 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
-        
-    - name: Upload a Build Artifact
-      id: build_artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: simple-player-authentication.zip
-        path: build/libs/simple-player-authentication-*-all.jar
 
-    - name: Release the Artifact
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: false
+        release_name: 1.0.0
+        tag_name: 1.0.0
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Upload the Artifact to the Release
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}

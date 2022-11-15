@@ -15,7 +15,9 @@
 <a href="https://github.com/Skywalx/simple-player-authentication/releases">
   <img src="https://img.shields.io/github/v/release/Skywalx/simple-player-authentication" alt="Release">
 </a>
-<img src="https://img.shields.io/badge/versions-1.17.1%20--%201.19.2-blue" alt="Versions">
+<a href="https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs">
+  <img src="https://img.shields.io/badge/versions-1.17.1%20--%201.19.2-blue" alt="Versions">
+</a>
 <a href="https://github.com/Skywalx/item-weight-lib/blob/main/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/Skywalx/item-weight-lib" alt="License"/>
 </a>

@@ -54,7 +54,7 @@ class LoginCommandTest {
 
     @Test
     void onLoginCommand_whenPlayerIsNotRegistered_shouldInformPlayerToMakeAccount() {
-        MessageConfiguration messageConfig = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+        MessageConfiguration messageConfig = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
         LoginCommand loginCommand = new LoginCommand(plugin, accountRepository, authenticatedUserRepository, messageConfig);
 
         loginCommand.onLoginCommand(player);
@@ -66,7 +66,7 @@ class LoginCommandTest {
     @Test
     void onLoginCommand_whenPlayerIsAlreadyLoggedIn_shouldInformPlayerThatHeIsAlreadyLoggedIn() {
         accountRepository.save(account);
-        MessageConfiguration messageConfig = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+        MessageConfiguration messageConfig = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
         LoginCommand loginCommand = new LoginCommand(plugin, accountRepository, authenticatedUserRepository, messageConfig);
         when(authenticatedUserRepository.isAuthenticated(account)).thenReturn(true);
 

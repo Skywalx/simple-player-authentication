@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class RegisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yml";
-    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
     private final HashingService hashingService = new ArgonHashingService();
     private Player player;
     private File file;

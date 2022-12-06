@@ -22,7 +22,7 @@ class LogoutCommandTest {
     public static final Account ACCOUNT = new Account(PLAYER_UUID, "minecraft123", new ArgonHashingService());
     private final AuthenticatedUserRepository authenticationRepository = mock(AuthenticatedUserRepository.class);
     private final AccountRepository accountRepository = mock(AccountRepository.class);
-    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
 
 
     @Test

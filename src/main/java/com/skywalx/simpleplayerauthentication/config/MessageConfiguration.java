@@ -1,14 +1,17 @@
 package com.skywalx.simpleplayerauthentication.config;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class MessageConfiguration {
     private final FileConfiguration configurationFile;
+    private final boolean usePlaceholderApi;
 
-    public MessageConfiguration(FileConfiguration messagesConfigurationFile) {
+    public MessageConfiguration(FileConfiguration messagesConfigurationFile, boolean isPlaceholderApiEnabled) {
         this.configurationFile = messagesConfigurationFile;
+        this.usePlaceholderApi = isPlaceholderApiEnabled;
     }
 
     public String getFormattedMessage(MessageKey messageKey) {
@@ -26,11 +29,14 @@ public class MessageConfiguration {
     }
 
     public void send(MessageKey messageKey, Player player) {
-        String playerName = "Unknown";
         if (player != null) {
-            playerName = player.getDisplayName();
+            String playerName = player.getDisplayName();
+            String formattedMessage = getFormattedMessage(messageKey, playerName);
+            if(usePlaceholderApi) {
+                formattedMessage = PlaceholderAPI.setPlaceholders(player, formattedMessage);
+            }
+            player.sendMessage(formattedMessage);
         }
-        player.sendMessage(getFormattedMessage(messageKey, playerName));
     }
 
     public enum MessageKey {

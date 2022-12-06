@@ -63,8 +63,10 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
             saveResource("messages.yml", false);
         }
 
+        boolean placeholderApiIsEnabled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+
         FileConfiguration messagesConfiguration = YamlConfiguration.loadConfiguration(messagesFile);
-        return new MessageConfiguration(messagesConfiguration);
+        return new MessageConfiguration(messagesConfiguration, placeholderApiIsEnabled);
     }
 
     private AccountRepository configuredAccountRepository() {

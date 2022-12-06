@@ -25,7 +25,7 @@ class UnregisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yml";
     private final HashingService hashingService = new ArgonHashingService();
-    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
     private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
     private final AuthenticatedUserRepository authenticatedUserRepository = mock(AuthenticatedUserRepository.class);
     private final SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);

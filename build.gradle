@@ -31,10 +31,14 @@ repositories {
         name = 'codemc-snapshots'
         url = 'https://repo.codemc.io/repository/maven-snapshots'
     }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation 'me.clip:placeholderapi:2.11.2'
     implementation 'co.aikar:acf-bukkit:0.5.1-SNAPSHOT'
     implementation 'net.wesjd:anvilgui:1.5.3-SNAPSHOT'
     implementation 'com.password4j:password4j:1.6.2'

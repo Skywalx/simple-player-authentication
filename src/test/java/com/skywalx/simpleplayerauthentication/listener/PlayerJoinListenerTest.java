@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class PlayerJoinListenerTest {
 
     private static final UUID PLAYER_UUID = UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d");
-    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")));
+    private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
 
     @Test
     void onPlayerJoin_whenPlayerIsNotAuthenticated_shouldInformUserToLogin() {

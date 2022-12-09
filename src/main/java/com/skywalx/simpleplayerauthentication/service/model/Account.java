@@ -1,19 +1,19 @@
 package com.skywalx.simpleplayerauthentication.service.model;
 
 
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public record Account(UUID uuid, String password, HashingService hashingService) {
+public record Account(UUID uuid, String password, AuthenticationStrategy authenticationStrategy) {
 
     public Account {
-        if (hashingService != null) {
-            password = hashingService.hash(password);
+        if (authenticationStrategy != null) {
+            password = authenticationStrategy.create(password);
         } else {
-            hashingService = new ArgonHashingService();
+            authenticationStrategy = new ArgonAuthenticationStrategy();
         }
     }
 
@@ -22,7 +22,7 @@ public record Account(UUID uuid, String password, HashingService hashingService)
     }
 
     public boolean doesPasswordMatch(String plainTextPassword) {
-        return hashingService.verify(plainTextPassword, password);
+        return authenticationStrategy.verify(plainTextPassword, password);
     }
 
     @Override

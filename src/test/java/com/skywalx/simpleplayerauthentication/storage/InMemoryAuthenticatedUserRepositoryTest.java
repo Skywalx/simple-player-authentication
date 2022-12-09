@@ -1,7 +1,7 @@
 package com.skywalx.simpleplayerauthentication.storage;
 
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryAuthenticatedUserRepositoryTest {
 
-    private final HashingService hashingService = new ArgonHashingService();
-    private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
+    private final AuthenticationStrategy authenticationStrategy = new ArgonAuthenticationStrategy();
+    private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", authenticationStrategy);
     private final Account differentAccountWithSameCredentials = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123");
 
     @Test

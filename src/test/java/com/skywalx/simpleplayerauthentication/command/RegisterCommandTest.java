@@ -1,10 +1,10 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,7 +23,7 @@ class RegisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yml";
     private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
-    private final HashingService hashingService = new ArgonHashingService();
+    private final AuthenticationStrategy authenticationStrategy = new ArgonAuthenticationStrategy();
     private Player player;
     private File file;
     private YamlConfiguration yamlConfiguration;
@@ -52,8 +52,8 @@ class RegisterCommandTest {
     @Test
     void onRegisterPassword_whenAccountAlreadyExists_shouldReturnMessageToPlayer() throws IOException {
         String password = "minecraft123";
-        RegisterCommand registerCommand = new RegisterCommand(plugin, accountRepository, hashingService, messageConfiguration);
-        yamlConfiguration.set(player.getUniqueId() + ".password", hashingService.hash(password));
+        RegisterCommand registerCommand = new RegisterCommand(plugin, accountRepository, authenticationStrategy, messageConfiguration);
+        yamlConfiguration.set(player.getUniqueId() + ".password", authenticationStrategy.create(password));
         yamlConfiguration.save(file);
 
         registerCommand.onRegisterCommand(player);

@@ -1,6 +1,7 @@
 package com.skywalx.simpleplayerauthentication;
 
 import co.aikar.commands.BukkitCommandManager;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.command.LoginCommand;
 import com.skywalx.simpleplayerauthentication.command.LogoutCommand;
 import com.skywalx.simpleplayerauthentication.command.RegisterCommand;
@@ -14,9 +15,8 @@ import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedEve
 import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedLoginEventExclusion;
 import com.skywalx.simpleplayerauthentication.listener.exclusions.BlacklistedRegisterEventExclusion;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.storage.InMemoryAuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
 import org.bukkit.Bukkit;
@@ -46,11 +46,11 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         this.getConfig().options().copyDefaults();
         this.saveDefaultConfig();
 
-        HashingService hashingService = configuredHashingService();
+        AuthenticationStrategy authenticationStrategy = configuredHashingService();
         AccountRepository accountRepository = configuredAccountRepository();
         MessageConfiguration messageConfiguration = configuredMessages();
 
-        registerCommands(hashingService, accountRepository, messageConfiguration);
+        registerCommands(authenticationStrategy, accountRepository, messageConfiguration);
         registerListeners(accountRepository, messageConfiguration);
 
         logger.info("Plugin has been enabled!");
@@ -91,7 +91,7 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
         return accountRepository;
     }
 
-    private HashingService configuredHashingService() {
+    private AuthenticationStrategy configuredHashingService() {
         String hashingServiceName = this.getConfig().getString("hashing-algorithm");
 
         if (!"argon2".equalsIgnoreCase(hashingServiceName)) {
@@ -99,14 +99,14 @@ public class SimplePlayerAuthenticationPlugin extends JavaPlugin {
             this.getServer().shutdown();
         }
 
-        HashingService hashingService = new ArgonHashingService();
+        AuthenticationStrategy authenticationStrategy = new ArgonAuthenticationStrategy();
         logger.info("- Hashing service: " + hashingServiceName);
-        return hashingService;
+        return authenticationStrategy;
     }
 
-    private void registerCommands(HashingService hashingService, AccountRepository accountRepository, MessageConfiguration messageConfiguration) {
+    private void registerCommands(AuthenticationStrategy authenticationStrategy, AccountRepository accountRepository, MessageConfiguration messageConfiguration) {
         BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
-        bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, hashingService, messageConfiguration));
+        bukkitCommandManager.registerCommand(new RegisterCommand(this, accountRepository, authenticationStrategy, messageConfiguration));
         bukkitCommandManager.registerCommand(new UnregisterCommand(this, accountRepository, authenticatedUserRepository, messageConfiguration));
         bukkitCommandManager.registerCommand(new LoginCommand(this, accountRepository, authenticatedUserRepository, messageConfiguration));
         bukkitCommandManager.registerCommand(new LogoutCommand(accountRepository, authenticatedUserRepository, messageConfiguration));

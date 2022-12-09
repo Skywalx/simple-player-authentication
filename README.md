@@ -54,11 +54,12 @@
 # :wrench: Future Improvements
 
 - More hashing algorithms such as: Bcrypt and Scrypt
-- More storage options such as: MySQL, MongoDB, PostgreSQL and MSSQL
+- More storage options such as: MySQL, MongoDB
 - More authentication storage options, to share authenticated state between servers with Redis, REST
 - Notify user every x time that /login should be used when not authenticated yet
 - 2FA, both inclusive and exclusive option (configurable) with credentials login
 - Allow defining a regex expression in the config for password policy
+- Create an option that shows login screen on login
 
 :exclamation: Attention: This is not a decisive list! There is no roadmap for this Minecraft plugin so new features
 might not have been listed here or features listed here might not be implemented! :exclamation:

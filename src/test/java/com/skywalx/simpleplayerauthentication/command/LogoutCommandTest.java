@@ -1,8 +1,8 @@
 package com.skywalx.simpleplayerauthentication.command;
 
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class LogoutCommandTest {
 
     public static final UUID PLAYER_UUID = UUID.fromString("67240b03-a3b9-4006-84d2-b335a4917e4c");
-    public static final Account ACCOUNT = new Account(PLAYER_UUID, "minecraft123", new ArgonHashingService());
+    public static final Account ACCOUNT = new Account(PLAYER_UUID, "minecraft123", new ArgonAuthenticationStrategy());
     private final AuthenticatedUserRepository authenticationRepository = mock(AuthenticatedUserRepository.class);
     private final AccountRepository accountRepository = mock(AccountRepository.class);
     private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);

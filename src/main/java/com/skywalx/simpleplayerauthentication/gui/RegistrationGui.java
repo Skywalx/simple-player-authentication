@@ -4,7 +4,7 @@ import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration.MessageKey;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.entity.Player;
@@ -15,13 +15,13 @@ public class RegistrationGui {
 
     private final SimplePlayerAuthenticationPlugin plugin;
     private final AccountRepository accountRepository;
-    private final HashingService hashingService;
+    private final AuthenticationStrategy authenticationStrategy;
     private final MessageConfiguration messageConfiguration;
 
-    public RegistrationGui(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, HashingService hashingService, MessageConfiguration messageConfiguration) {
+    public RegistrationGui(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, AuthenticationStrategy authenticationStrategy, MessageConfiguration messageConfiguration) {
         this.plugin = plugin;
         this.accountRepository = accountRepository;
-        this.hashingService = hashingService;
+        this.authenticationStrategy = authenticationStrategy;
         this.messageConfiguration = messageConfiguration;
     }
 
@@ -57,7 +57,7 @@ public class RegistrationGui {
                             return AnvilGUI.Response.close();
                         }
 
-                        Account account = new Account(player.getUniqueId(), password, hashingService);
+                        Account account = new Account(player.getUniqueId(), password, authenticationStrategy);
                         try {
                             accountRepository.save(account);
                             messageConfiguration.send(MessageKey.SUCCESSFUL_REGISTRATION, player);

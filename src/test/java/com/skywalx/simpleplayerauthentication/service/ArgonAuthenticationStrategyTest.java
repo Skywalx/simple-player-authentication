@@ -1,18 +1,19 @@
 package com.skywalx.simpleplayerauthentication.service;
 
 import com.password4j.Password;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArgonHashingServiceTest {
+class ArgonAuthenticationStrategyTest {
 
     private static final String PASSWORD = "minecraft123";
-    private final ArgonHashingService argonHashingService = new ArgonHashingService();
+    private final ArgonAuthenticationStrategy argonHashingService = new ArgonAuthenticationStrategy();
 
     @Test
     void hash_shouldHashPasswordWithArgon2() {
-        String hash = argonHashingService.hash(PASSWORD);
+        String hash = argonHashingService.create(PASSWORD);
 
         assertTrue(Password.check(PASSWORD, hash).withArgon2());
     }

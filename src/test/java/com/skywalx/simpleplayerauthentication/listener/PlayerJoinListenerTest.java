@@ -1,8 +1,8 @@
 package com.skywalx.simpleplayerauthentication.listener;
 
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.ChatColor;
@@ -26,7 +26,7 @@ class PlayerJoinListenerTest {
     void onPlayerJoin_whenPlayerIsNotAuthenticated_shouldInformUserToLogin() {
         AccountRepository accountRepository = mock(AccountRepository.class);
         AuthenticatedUserRepository authenticationRepository = mock(AuthenticatedUserRepository.class);
-        when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "minecraft123", new ArgonHashingService())));
+        when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "minecraft123", new ArgonAuthenticationStrategy())));
         when(authenticationRepository.isAuthenticated(any())).thenReturn(false);
         Player player = mock(Player.class);
         when(player.getDisplayName()).thenReturn("username");
@@ -42,7 +42,7 @@ class PlayerJoinListenerTest {
     void onPlayerJoin_whenPlayerIsAuthenticated_shouldNotInformUserToLogin() {
         AccountRepository accountRepository = mock(AccountRepository.class);
         AuthenticatedUserRepository authenticationRepository = mock(AuthenticatedUserRepository.class);
-        when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "minecraft123", new ArgonHashingService())));
+        when(accountRepository.findByUuid(PLAYER_UUID)).thenReturn(Optional.of(new Account(PLAYER_UUID, "minecraft123", new ArgonAuthenticationStrategy())));
         when(authenticationRepository.isAuthenticated(any())).thenReturn(true);
         Player player = mock(Player.class);
         when(player.getDisplayName()).thenReturn("username");

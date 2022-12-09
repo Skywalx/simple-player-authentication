@@ -1,10 +1,10 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
 import org.bukkit.ChatColor;
@@ -27,8 +27,8 @@ class LoginCommandTest {
     public static final String PLAINTEXT_PASSWORD = "minecraft123";
 
     private final AuthenticatedUserRepository authenticatedUserRepository = mock(AuthenticatedUserRepository.class);
-    private final HashingService hashingService = new ArgonHashingService();
-    private final Account account = new Account(PLAYER_UUID, PLAINTEXT_PASSWORD, hashingService);
+    private final AuthenticationStrategy authenticationStrategy = new ArgonAuthenticationStrategy();
+    private final Account account = new Account(PLAYER_UUID, PLAINTEXT_PASSWORD, authenticationStrategy);
     private final SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);
 
     private YamlAccountRepository accountRepository;

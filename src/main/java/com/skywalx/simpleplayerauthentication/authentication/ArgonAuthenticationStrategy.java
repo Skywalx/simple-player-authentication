@@ -1,10 +1,12 @@
-package com.skywalx.simpleplayerauthentication.service;
+package com.skywalx.simpleplayerauthentication.authentication;
 
 import com.password4j.Password;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 
-public class ArgonHashingService implements HashingService {
+public class ArgonAuthenticationStrategy implements AuthenticationStrategy {
+
     @Override
-    public String hash(String password) {
+    public String create(String password) {
         return Password.hash(password)
                 .addRandomSalt()
                 .withArgon2()

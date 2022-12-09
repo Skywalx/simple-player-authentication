@@ -10,7 +10,7 @@ import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration.MessageKey;
 import com.skywalx.simpleplayerauthentication.gui.RegistrationGui;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import org.bukkit.entity.Player;
 
@@ -21,26 +21,26 @@ public class RegisterCommand extends BaseCommand {
 
     private final SimplePlayerAuthenticationPlugin plugin;
     private final AccountRepository accountRepository;
-    private final HashingService hashingService;
+    private final AuthenticationStrategy authenticationStrategy;
     private final MessageConfiguration messageConfiguration;
 
-    public RegisterCommand(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, HashingService hashingService, MessageConfiguration messageConfiguration) {
+    public RegisterCommand(SimplePlayerAuthenticationPlugin plugin, AccountRepository accountRepository, AuthenticationStrategy authenticationStrategy, MessageConfiguration messageConfiguration) {
         this.plugin = plugin;
         this.accountRepository = accountRepository;
-        this.hashingService = hashingService;
+        this.authenticationStrategy = authenticationStrategy;
         this.messageConfiguration = messageConfiguration;
     }
 
     @Default
     @Syntax("Usage: /register")
     public void onRegisterCommand(Player player) {
-        Account account = new Account(player.getUniqueId(), "", hashingService);
+        Account account = new Account(player.getUniqueId(), "", authenticationStrategy);
         if (accountRepository.exists(account)) {
             messageConfiguration.send(MessageKey.ALREADY_REGISTERED, player);
             return;
         }
 
-        RegistrationGui registrationGui = new RegistrationGui(plugin, accountRepository, hashingService, messageConfiguration);
+        RegistrationGui registrationGui = new RegistrationGui(plugin, accountRepository, authenticationStrategy, messageConfiguration);
         registrationGui.open(player);
     }
 }

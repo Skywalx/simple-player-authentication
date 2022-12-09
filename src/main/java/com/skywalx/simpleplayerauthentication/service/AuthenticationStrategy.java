@@ -1,9 +1,9 @@
 package com.skywalx.simpleplayerauthentication.service;
 
 
-public interface HashingService {
+public interface AuthenticationStrategy {
 
-    String hash(String password);
+    String create(String password);
 
     boolean verify(String password, String hash);
 

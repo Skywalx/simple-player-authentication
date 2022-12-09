@@ -1,11 +1,11 @@
 package com.skywalx.simpleplayerauthentication.command;
 
 import com.skywalx.simpleplayerauthentication.SimplePlayerAuthenticationPlugin;
+import com.skywalx.simpleplayerauthentication.authentication.ArgonAuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.config.MessageConfiguration;
 import com.skywalx.simpleplayerauthentication.service.AccountRepository;
-import com.skywalx.simpleplayerauthentication.service.ArgonHashingService;
 import com.skywalx.simpleplayerauthentication.service.AuthenticatedUserRepository;
-import com.skywalx.simpleplayerauthentication.service.HashingService;
+import com.skywalx.simpleplayerauthentication.service.AuthenticationStrategy;
 import com.skywalx.simpleplayerauthentication.service.model.Account;
 import com.skywalx.simpleplayerauthentication.storage.YamlAccountRepository;
 import org.bukkit.ChatColor;
@@ -24,9 +24,9 @@ import static org.mockito.Mockito.*;
 class UnregisterCommandTest {
 
     private static final String PATH = "src/test/resources/accounts.yml";
-    private final HashingService hashingService = new ArgonHashingService();
+    private final AuthenticationStrategy authenticationStrategy = new ArgonAuthenticationStrategy();
     private final MessageConfiguration messageConfiguration = new MessageConfiguration(YamlConfiguration.loadConfiguration(new File("src/test/resources/messages.yml")), false);
-    private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", hashingService);
+    private final Account account = new Account(java.util.UUID.fromString("de0ba13e-59ee-4b7f-903b-658b40d36e7d"), "minecraft123", authenticationStrategy);
     private final AuthenticatedUserRepository authenticatedUserRepository = mock(AuthenticatedUserRepository.class);
     private final SimplePlayerAuthenticationPlugin plugin = mock(SimplePlayerAuthenticationPlugin.class);
     private Player player;
@@ -42,7 +42,7 @@ class UnregisterCommandTest {
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(account.uuid());
         try {
-            yamlConfiguration.set(account.uuid().toString() + ".password", hashingService.hash(account.password()));
+            yamlConfiguration.set(account.uuid().toString() + ".password", authenticationStrategy.create(account.password()));
             yamlConfiguration.save(file);
         } catch (IOException ioException) {
             ioException.printStackTrace();
